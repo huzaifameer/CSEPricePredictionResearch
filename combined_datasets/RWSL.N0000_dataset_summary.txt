@@ -1,0 +1,14 @@
+Dataset Summary for RWSL.N0000
+==================================================
+Company: Raigam Wayamba Salterns PLC 
+Dataset size: 904 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 3.50 - Rs. 29.10
+Average price: Rs. 7.95
+Sentiment range: -0.600 to 1.000
+Average sentiment: 0.064
+Positive sentiment days: 237
+Negative sentiment days: 51
+Neutral sentiment days: 616
+Standard deviation - Price: 4.29
+Standard deviation - Sentiment: 0.169

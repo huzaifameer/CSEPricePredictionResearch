@@ -1,0 +1,27 @@
+Correlation Analysis for HEXP.N0000
+==================================================
+Price-Sentiment Correlation: -0.1491
+
+📉 Interpretation: WEAK NEGATIVE CORRELATION
+   Slight tendency for higher sentiment with lower prices
+   Counter-intuitive relationship
+
+==================================================
+LAGGED CORRELATION ANALYSIS:
+--------------------------------------------------
+Correlation with 1-day lag: -0.1376
+Correlation with 2-day lag: -0.1293
+Correlation with 3-day lag: -0.1261
+Correlation with 4-day lag: -0.1214
+Correlation with 5-day lag: -0.1154
+Correlation with 6-day lag: -0.1152
+Correlation with 7-day lag: -0.1100
+Correlation with 8-day lag: -0.1025
+Correlation with 9-day lag: -0.0924
+Correlation with 10-day lag: -0.0820
+
+==================================================
+RECOMMENDATION FOR MODELING:
+--------------------------------------------------
+⚠️  Sentiment may not be a strong predictor for this stock
+    Consider focusing on price history only

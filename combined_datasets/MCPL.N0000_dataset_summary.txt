@@ -1,0 +1,14 @@
+Dataset Summary for MCPL.N0000
+==================================================
+Company: Mahaweli Coconut Plantations PLC
+Dataset size: 811 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 24.20 - Rs. 58.80
+Average price: Rs. 35.35
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.067
+Positive sentiment days: 236
+Negative sentiment days: 73
+Neutral sentiment days: 502
+Standard deviation - Price: 7.24
+Standard deviation - Sentiment: 0.195

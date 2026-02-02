@@ -1,0 +1,27 @@
+Correlation Analysis for MGT.N0000
+==================================================
+Price-Sentiment Correlation: 0.2678
+
+↔️ Interpretation: WEAK POSITIVE CORRELATION
+   Slight tendency for higher sentiment with higher prices
+   Other factors may be more important than sentiment
+
+==================================================
+LAGGED CORRELATION ANALYSIS:
+--------------------------------------------------
+Correlation with 1-day lag: 0.2684  ⭐ (Stronger than current day)
+Correlation with 2-day lag: 0.2765  ⭐ (Stronger than current day)
+Correlation with 3-day lag: 0.2769  ⭐ (Stronger than current day)
+Correlation with 4-day lag: 0.2774  ⭐ (Stronger than current day)
+Correlation with 5-day lag: 0.2769  ⭐ (Stronger than current day)
+Correlation with 6-day lag: 0.2773  ⭐ (Stronger than current day)
+Correlation with 7-day lag: 0.2737  ⭐ (Stronger than current day)
+Correlation with 8-day lag: 0.2784  ⭐ (Stronger than current day)
+Correlation with 9-day lag: 0.2837  ⭐ (Stronger than current day)
+Correlation with 10-day lag: 0.2807  ⭐ (Stronger than current day)
+
+==================================================
+RECOMMENDATION FOR MODELING:
+--------------------------------------------------
+⚠️  Sentiment may not be a strong predictor for this stock
+    Consider focusing on price history only

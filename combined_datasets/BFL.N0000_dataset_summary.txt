@@ -1,0 +1,14 @@
+Dataset Summary for BFL.N0000
+==================================================
+Company: Bairaha Farms PLC
+Dataset size: 903 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 111.25 - Rs. 394.00
+Average price: Rs. 179.70
+Sentiment range: -0.667 to 1.000
+Average sentiment: 0.069
+Positive sentiment days: 250
+Negative sentiment days: 56
+Neutral sentiment days: 597
+Standard deviation - Price: 43.63
+Standard deviation - Sentiment: 0.181

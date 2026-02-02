@@ -1,0 +1,27 @@
+Correlation Analysis for WATA.N0000
+==================================================
+Price-Sentiment Correlation: -0.0273
+
+➡️ Interpretation: NO SIGNIFICANT CORRELATION
+   Sentiment scores have minimal direct impact on prices
+   Market may not be reacting to news sentiment
+
+==================================================
+LAGGED CORRELATION ANALYSIS:
+--------------------------------------------------
+Correlation with 1-day lag: -0.0393  ⭐ (Stronger than current day)
+Correlation with 2-day lag: -0.0470  ⭐ (Stronger than current day)
+Correlation with 3-day lag: -0.0410  ⭐ (Stronger than current day)
+Correlation with 4-day lag: -0.0452  ⭐ (Stronger than current day)
+Correlation with 5-day lag: -0.0433  ⭐ (Stronger than current day)
+Correlation with 6-day lag: -0.0456  ⭐ (Stronger than current day)
+Correlation with 7-day lag: -0.0413  ⭐ (Stronger than current day)
+Correlation with 8-day lag: -0.0304  ⭐ (Stronger than current day)
+Correlation with 9-day lag: -0.0351  ⭐ (Stronger than current day)
+Correlation with 10-day lag: -0.0325  ⭐ (Stronger than current day)
+
+==================================================
+RECOMMENDATION FOR MODELING:
+--------------------------------------------------
+⚠️  Sentiment may not be a strong predictor for this stock
+    Consider focusing on price history only

@@ -1,0 +1,14 @@
+Dataset Summary for AGPL.N0000
+==================================================
+Company: Agarapatana Plantations PLC
+Dataset size: 512 records
+Date range: 2023-09-04 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 6.80 - Rs. 24.00
+Average price: Rs. 11.58
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.107
+Positive sentiment days: 240
+Negative sentiment days: 76
+Neutral sentiment days: 196
+Standard deviation - Price: 5.34
+Standard deviation - Sentiment: 0.240

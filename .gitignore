@@ -1,0 +1,421 @@
+# =================================================================
+# PYTHON / VIRTUAL ENVIRONMENT
+# =================================================================
+# Virtual environment files and folders
+venv/
+env/
+.venv/
+.env
+ENV/
+env.bak/
+venv.bak/
+
+# Dependencies, logs, etc.
+pip-log.txt
+pip-delete-this-file.txt
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.ipynb_checkpoints/
+
+# Python compiled objects
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Distribution/packaging
+dist/
+build/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / pytest
+.pytest_cache/
+.hypothesis/
+
+# =================================================================
+# OPERATING SYSTEM & EDITOR
+# =================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# IDEs and Editors
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm/IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+*.ipynb
+
+# Spyder
+.spyderproject
+.spyproject
+
+# =================================================================
+# MACHINE LEARNING / DATA SCIENCE
+# =================================================================
+# 1. Saved Models (These can be very large)
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+model.bin
+*.model
+*.weights
+
+# Specific model directories
+models/
+saved_models/
+checkpoints/
+trained_models/
+*.sav
+
+# 2. Large Datasets (Avoid pushing these to Git)
+# Uncomment the ones you want to ignore
+*.csv
+*.xlsx
+*.xls
+*.parquet
+*.feather
+*.tsv
+*.json
+*.jsonl
+*.xml
+*.zip
+*.rar
+*.tar
+*.tar.gz
+*.7z
+*.bz2
+*.gz
+
+# Data directories
+data/
+datasets/
+raw_data/
+processed_data/
+tmp/
+temp/
+cache/
+.cache/
+
+# Specific to your project
+news_data/
+stock_data/
+labeled_data/
+training_data/
+test_data/
+
+# 3. Output files
+# Folders containing generated graphs, reports, and intermediate files
+results/
+reports/
+figures/
+outputs/
+plots/
+visualizations/
+predictions/
+logs/
+*.log
+
+# 4. Notebooks outputs
+*.out
+
+# =================================================================
+# WEB SCRAPING & DATA COLLECTION
+# =================================================================
+# Browser automation
+chromedriver
+geckodriver
+*.exe
+selenium-debug.log
+ghostdriver.log
+
+# Scraped data temporary files
+scraped/
+crawled/
+*.html
+*.htm
+
+# =================================================================
+# NATURAL LANGUAGE PROCESSING
+# =================================================================
+# Word embeddings and pre-trained models (very large)
+*.vec
+*.bin
+*.txt.gz
+fasttext_models/
+word2vec_models/
+glove_models/
+
+# Transformers cache
+transformers/
+.transformers_cache/
+huggingface/
+
+# NLTK data
+nltk_data/
+
+# spaCy models
+spacy_models/
+
+# =================================================================
+# FLASK / WEB APPLICATION
+# =================================================================
+# Flask
+instance/
+.webassets-cache
+*.db
+*.sqlite
+*.sqlite3
+
+# Flask sessions
+flask_session/
+
+# Uploaded files
+uploads/
+static/uploads/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.flaskenv
+
+# =================================================================
+# DATABASE
+# =================================================================
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# PostgreSQL
+*.sql
+*.dump
+pg_data/
+
+# Database backups
+backups/
+*.backup
+
+# =================================================================
+# CREDENTIALS & SECRETS
+# =================================================================
+# API keys, passwords, tokens
+credentials.json
+secrets.json
+config.ini
+.secrets
+*.key
+*.pem
+*.crt
+*.p12
+
+# AWS
+.aws/
+*.pem
+
+# Google Cloud
+gcloud/
+*.json
+
+# =================================================================
+# DOCUMENTATION & REPORTS
+# =================================================================
+# LaTeX
+*.aux
+*.lof
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+*.synctex.gz
+*.blg
+*.bbl
+*.bcf
+*.run.xml
+
+# MS Office temporary files
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+
+# =================================================================
+# PROJECT-SPECIFIC (CSE SENTIMENT ANALYSIS)
+# =================================================================
+# Your specific project files that shouldn't be committed
+
+# Trained SVM models (10 company-specific models)
+svm_models/
+sentiment_models/
+*_svm_model.pkl
+*_svm_model.joblib
+
+# Trained SARIMAX models (10 company-specific models)
+sarimax_models/
+price_models/
+*_sarimax_model.pkl
+*_sarimax_model.joblib
+
+# TF-IDF vectorizers
+vectorizers/
+*_tfidf_vectorizer.pkl
+*_vectorizer.joblib
+
+# Labeled dataset (2,500+ articles)
+labeled_articles/
+annotated_data/
+sentiment_dataset.csv
+labeled_news.xlsx
+
+# Web scraping outputs
+ada_derana_articles/
+lankadeepa_articles/
+scraped_news/
+news_archive/
+
+# CSE stock price data
+cse_prices/
+stock_history/
+ohlc_data/
+
+# Processing logs
+scraping_log.txt
+processing_log.txt
+training_log.txt
+error_log.txt
+
+# Temporary files during processing
+temp_preprocessing/
+intermediate_results/
+cache_files/
+
+# Model evaluation results
+evaluation_results/
+confusion_matrices/
+classification_reports/
+
+# Predictions output
+price_predictions/
+sentiment_predictions/
+forecast_results/
+
+# Dashboard screenshots
+screenshots/
+
+# Performance metrics
+metrics/
+benchmarks/
+
+# Testing data
+test_articles/
+validation_set/
+
+# =================================================================
+# VERSION CONTROL
+# =================================================================
+.git/
+.gitattributes
+.gitmodules
+
+# =================================================================
+# MISCELLANEOUS
+# =================================================================
+# Compressed files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# System files
+.directory
+.Trash-*
+
+# Node modules (if you have any JS frontend)
+node_modules/
+package-lock.json
+yarn.lock
+
+# R (if using R for any statistical analysis)
+.Rhistory
+.RData
+.Rproj.user

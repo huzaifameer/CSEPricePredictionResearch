@@ -1,0 +1,14 @@
+Dataset Summary for HEXP.N0000
+==================================================
+Company: Hayleys Fibre PLC
+Dataset size: 897 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 45.90 - Rs. 107.25
+Average price: Rs. 58.27
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.066
+Positive sentiment days: 250
+Negative sentiment days: 76
+Neutral sentiment days: 571
+Standard deviation - Price: 11.71
+Standard deviation - Sentiment: 0.190

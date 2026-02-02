@@ -1,0 +1,14 @@
+Dataset Summary for HAPU.N0000
+==================================================
+Company: Hapugastenne Plantations PLC 
+Dataset size: 848 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 16.90 - Rs. 77.80
+Average price: Rs. 42.36
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.059
+Positive sentiment days: 219
+Negative sentiment days: 68
+Neutral sentiment days: 561
+Standard deviation - Price: 11.33
+Standard deviation - Sentiment: 0.186

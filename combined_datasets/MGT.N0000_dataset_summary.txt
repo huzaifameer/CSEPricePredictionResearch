@@ -1,0 +1,14 @@
+Dataset Summary for MGT.N0000
+==================================================
+Company: Hayleys Fabric PLC
+Dataset size: 906 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 20.90 - Rs. 56.70
+Average price: Rs. 38.70
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.061
+Positive sentiment days: 244
+Negative sentiment days: 80
+Neutral sentiment days: 582
+Standard deviation - Price: 9.12
+Standard deviation - Sentiment: 0.190

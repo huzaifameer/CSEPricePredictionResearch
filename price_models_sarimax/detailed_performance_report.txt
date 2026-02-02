@@ -1,0 +1,81 @@
+SARIMAX STOCK PRICE PREDICTION - PERFORMANCE REPORT
+======================================================================
+
+Training Date: 2026-01-20 00:06:23.497508
+Total Companies: 10
+Average MAPE: 41.17%
+Best Model (Lowest MAPE): Kotagala Plantations PLC (7.81%)
+Worst Model (Highest MAPE): Watawala Plantations PLC (264.22%)
+
+COMPANY-WISE PERFORMANCE:
+----------------------------------------------------------------------
+
+Mahaweli Coconut Plantations PLC (MCPL.N0000):
+  MAPE: 12.18%
+  MAE: Rs. 5.52
+  RMSE: Rs. 7.33
+  Price-Sentiment Correlation: -0.1160
+  Best Parameters: (2, 1, 2) (1, 0, 1, 5)
+
+Watawala Plantations PLC (WATA.N0000):
+  MAPE: 264.22%
+  MAE: Rs. 87.6
+  RMSE: Rs. 93.39
+  Price-Sentiment Correlation: -0.0273
+  Best Parameters: (2, 1, 2) (1, 0, 1, 5)
+
+Agarapatana Plantations PLC (AGPL.N0000):
+  MAPE: 21.45%
+  MAE: Rs. 4.46
+  RMSE: Rs. 4.81
+  Price-Sentiment Correlation: -0.0214
+  Best Parameters: (1, 0, 0) (0, 0, 0, 5)
+
+Hapugastenne Plantations PLC  (HAPU.N0000):
+  MAPE: 12.63%
+  MAE: Rs. 6.71
+  RMSE: Rs. 8.77
+  Price-Sentiment Correlation: -0.0579
+  Best Parameters: (2, 1, 2) (0, 0, 1, 5)
+
+Kotagala Plantations PLC (KOTA.N0000):
+  MAPE: 7.81%
+  MAE: Rs. 0.71
+  RMSE: Rs. 0.81
+  Price-Sentiment Correlation: 0.0343
+  Best Parameters: (2, 1, 2) (0, 0, 1, 5)
+
+Bairaha Farms PLC (BFL.N0000):
+  MAPE: 16.94%
+  MAE: Rs. 43.22
+  RMSE: Rs. 66.73
+  Price-Sentiment Correlation: 0.0047
+  Best Parameters: (2, 1, 2) (0, 0, 1, 5)
+
+Raigam Wayamba Salterns PLC  (RWSL.N0000):
+  MAPE: 29.93%
+  MAE: Rs. 5.61
+  RMSE: Rs. 8.56
+  Price-Sentiment Correlation: 0.0306
+  Best Parameters: (0, 1, 1) (1, 0, 0, 5)
+
+Dipped Products PLC (DIPP.N0000):
+  MAPE: 9.32%
+  MAE: Rs. 5.66
+  RMSE: Rs. 7.02
+  Price-Sentiment Correlation: 0.1140
+  Best Parameters: (2, 1, 2) (0, 0, 1, 5)
+
+Hayleys Fabric PLC (MGT.N0000):
+  MAPE: 20.03%
+  MAE: Rs. 8.76
+  RMSE: Rs. 9.43
+  Price-Sentiment Correlation: 0.2678
+  Best Parameters: (0, 1, 2) (0, 0, 1, 5)
+
+Hayleys Fibre PLC (HEXP.N0000):
+  MAPE: 17.23%
+  MAE: Rs. 13.08
+  RMSE: Rs. 20.45
+  Price-Sentiment Correlation: -0.1491
+  Best Parameters: (1, 1, 2) (0, 0, 1, 5)

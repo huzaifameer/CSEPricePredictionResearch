@@ -1,0 +1,14 @@
+Dataset Summary for KOTA.N0000
+==================================================
+Company: Kotagala Plantations PLC
+Dataset size: 906 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 3.40 - Rs. 12.50
+Average price: Rs. 7.18
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.061
+Positive sentiment days: 243
+Negative sentiment days: 80
+Neutral sentiment days: 583
+Standard deviation - Price: 1.76
+Standard deviation - Sentiment: 0.189

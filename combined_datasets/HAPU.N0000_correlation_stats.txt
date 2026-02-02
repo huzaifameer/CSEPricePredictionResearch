@@ -1,0 +1,27 @@
+Correlation Analysis for HAPU.N0000
+==================================================
+Price-Sentiment Correlation: -0.0579
+
+➡️ Interpretation: NO SIGNIFICANT CORRELATION
+   Sentiment scores have minimal direct impact on prices
+   Market may not be reacting to news sentiment
+
+==================================================
+LAGGED CORRELATION ANALYSIS:
+--------------------------------------------------
+Correlation with 1-day lag: -0.0584  ⭐ (Stronger than current day)
+Correlation with 2-day lag: -0.0492
+Correlation with 3-day lag: -0.0523
+Correlation with 4-day lag: -0.0479
+Correlation with 5-day lag: -0.0449
+Correlation with 6-day lag: -0.0442
+Correlation with 7-day lag: -0.0495
+Correlation with 8-day lag: -0.0416
+Correlation with 9-day lag: -0.0367
+Correlation with 10-day lag: -0.0398
+
+==================================================
+RECOMMENDATION FOR MODELING:
+--------------------------------------------------
+⚠️  Sentiment may not be a strong predictor for this stock
+    Consider focusing on price history only

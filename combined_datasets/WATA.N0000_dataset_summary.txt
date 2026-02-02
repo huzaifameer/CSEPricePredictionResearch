@@ -1,0 +1,14 @@
+Dataset Summary for WATA.N0000
+==================================================
+Company: Watawala Plantations PLC
+Dataset size: 902 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 25.30 - Rs. 190.25
+Average price: Rs. 80.27
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.063
+Positive sentiment days: 243
+Negative sentiment days: 78
+Neutral sentiment days: 581
+Standard deviation - Price: 30.06
+Standard deviation - Sentiment: 0.190

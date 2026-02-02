@@ -1,0 +1,14 @@
+Dataset Summary for DIPP.N0000
+==================================================
+Company: Dipped Products PLC
+Dataset size: 905 records
+Date range: 2022-01-03 00:00:00 to 2025-10-21 00:00:00
+Price range: Rs. 23.40 - Rs. 71.50
+Average price: Rs. 38.23
+Sentiment range: -1.000 to 1.000
+Average sentiment: 0.061
+Positive sentiment days: 247
+Negative sentiment days: 80
+Neutral sentiment days: 578
+Standard deviation - Price: 11.73
+Standard deviation - Sentiment: 0.189
