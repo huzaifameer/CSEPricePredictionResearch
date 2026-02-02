@@ -98,9 +98,7 @@ out/
 *.sublime-workspace
 *.sublime-project
 
-# Jupyter Notebook
-.ipynb_checkpoints/
-*.ipynb
+
 
 # Spyder
 .spyderproject
