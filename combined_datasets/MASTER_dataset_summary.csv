@@ -1,0 +1,11 @@
+company_code,company_name_first,closing_price_count,closing_price_min,closing_price_max,closing_price_mean,closing_price_std,sentiment_score_mean,sentiment_score_std,sentiment_score_min,sentiment_score_max
+AGPL.N0000,Agarapatana Plantations PLC,512,6.8,24.0,11.582,5.336,0.107,0.24,-1.0,1.0
+BFL.N0000,Bairaha Farms PLC,903,111.25,394.0,179.699,43.63,0.069,0.181,-0.667,1.0
+DIPP.N0000,Dipped Products PLC,905,23.4,71.5,38.23,11.728,0.061,0.189,-1.0,1.0
+HAPU.N0000,Hapugastenne Plantations PLC ,848,16.9,77.8,42.363,11.328,0.059,0.186,-1.0,1.0
+HEXP.N0000,Hayleys Fibre PLC,897,45.9,107.25,58.271,11.711,0.066,0.19,-1.0,1.0
+KOTA.N0000,Kotagala Plantations PLC,906,3.4,12.5,7.176,1.757,0.061,0.189,-1.0,1.0
+MCPL.N0000,Mahaweli Coconut Plantations PLC,811,24.2,58.8,35.345,7.239,0.067,0.195,-1.0,1.0
+MGT.N0000,Hayleys Fabric PLC,906,20.9,56.7,38.704,9.116,0.061,0.19,-1.0,1.0
+RWSL.N0000,Raigam Wayamba Salterns PLC ,904,3.5,29.1,7.954,4.291,0.064,0.169,-0.6,1.0
+WATA.N0000,Watawala Plantations PLC,902,25.3,190.25,80.271,30.058,0.063,0.19,-1.0,1.0

@@ -1,0 +1,11 @@
+feature,importance
+price_ma_5,0.7394216
+price_lag_1,0.13998641
+price_lag_2,0.08228456
+price_return_5,0.010093011
+price_return_1,0.0056400485
+price_lag_5,0.0041338783
+price_ma_20,0.0031343708
+cumulative_sentiment,0.0021497668
+price_lag_7,0.0017103076
+price_std_5,0.0016615906

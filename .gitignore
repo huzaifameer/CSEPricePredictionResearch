@@ -122,17 +122,12 @@ model.bin
 *.weights
 
 # Specific model directories
-models/
-saved_models/
 checkpoints/
 trained_models/
 *.sav
 
 # 2. Large Datasets (Avoid pushing these to Git)
 # Uncomment the ones you want to ignore
-*.csv
-*.xlsx
-*.xls
 *.parquet
 *.feather
 *.tsv
@@ -148,7 +143,6 @@ trained_models/
 *.gz
 
 # Data directories
-data/
 datasets/
 raw_data/
 processed_data/
@@ -318,8 +312,7 @@ sentiment_models/
 *_svm_model.joblib
 
 # Trained SARIMAX models (10 company-specific models)
-sarimax_models/
-price_models/
+
 *_sarimax_model.pkl
 *_sarimax_model.joblib
 

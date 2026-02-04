@@ -1,0 +1,11 @@
+Company,Company_Name,Total_Records,Date_Start,Date_End,Avg_Price,Avg_Sentiment,Positive_Days,Negative_Days,Neutral_Days,Price_Std,Sentiment_Std,Correlation,Dataset_File
+MCPL.N0000,Mahaweli Coconut Plantations PLC,811,2022-01-03,2025-10-21,35.35,0.067,236,73,502,7.24,0.195,-0.116,MCPL.N0000_combined_dataset.csv
+WATA.N0000,Watawala Plantations PLC,902,2022-01-03,2025-10-21,80.27,0.063,243,78,581,30.06,0.19,-0.0273,WATA.N0000_combined_dataset.csv
+AGPL.N0000,Agarapatana Plantations PLC,512,2023-09-04,2025-10-21,11.58,0.107,240,76,196,5.34,0.24,-0.0214,AGPL.N0000_combined_dataset.csv
+HAPU.N0000,Hapugastenne Plantations PLC ,848,2022-01-03,2025-10-21,42.36,0.059,219,68,561,11.33,0.186,-0.0579,HAPU.N0000_combined_dataset.csv
+KOTA.N0000,Kotagala Plantations PLC,906,2022-01-03,2025-10-21,7.18,0.061,243,80,583,1.76,0.189,0.0343,KOTA.N0000_combined_dataset.csv
+BFL.N0000,Bairaha Farms PLC,903,2022-01-03,2025-10-21,179.7,0.069,250,56,597,43.63,0.181,0.0047,BFL.N0000_combined_dataset.csv
+RWSL.N0000,Raigam Wayamba Salterns PLC ,904,2022-01-03,2025-10-21,7.95,0.064,237,51,616,4.29,0.169,0.0306,RWSL.N0000_combined_dataset.csv
+DIPP.N0000,Dipped Products PLC,905,2022-01-03,2025-10-21,38.23,0.061,247,80,578,11.73,0.189,0.114,DIPP.N0000_combined_dataset.csv
+MGT.N0000,Hayleys Fabric PLC,906,2022-01-03,2025-10-21,38.7,0.061,244,80,582,9.12,0.19,0.2678,MGT.N0000_combined_dataset.csv
+HEXP.N0000,Hayleys Fibre PLC,897,2022-01-03,2025-10-21,58.27,0.066,250,76,571,11.71,0.19,-0.1491,HEXP.N0000_combined_dataset.csv

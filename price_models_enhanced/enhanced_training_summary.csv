@@ -1,0 +1,10 @@
+Company,Company_Name,Best_Model,SARIMAX_MAE,SARIMAX_RMSE,SARIMAX_MAPE,XGBoost_MAE,XGBoost_RMSE,XGBoost_MAPE,Ensemble_MAPE,Best_Order,Best_Seasonal,CV_MAPE,Training_Size,Testing_Size,Use_Log,Use_Diff,Model_Path,Plot_Path
+MCPL.N0000,Mahaweli Coconut Plantations PLC,XGBoost,4.9,5.83,11.53,2.77,4.85,5.58,7.21,"(1, 0, 2)","(1, 1, 0, 7)",6.9,648,163,False,False,price_models_enhanced/MCPL.N0000_xgboost.joblib,N/A
+WATA.N0000,Watawala Plantations PLC,XGBoost,90.05,96.53,272.87,37.54,39.63,114.72,166.14,"(0, 1, 0)","(0, 0, 0, 5)",2.01,721,181,True,False,price_models_enhanced/WATA.N0000_xgboost.joblib,N/A
+AGPL.N0000,Agarapatana Plantations PLC,XGBoost,1.94,2.08,9.25,1.93,2.19,8.96,9.3,"(2, 1, 1)","(1, 0, 1, 20)",4.53,409,103,True,False,price_models_enhanced/AGPL.N0000_xgboost.joblib,N/A
+HAPU.N0000,Hapugastenne Plantations PLC ,XGBoost,7.01,9.66,12.82,0.86,1.65,1.42,2.09,"(2, 0, 0)","(1, 0, 0, 5)",14.63,678,170,False,False,price_models_enhanced/HAPU.N0000_xgboost.joblib,N/A
+BFL.N0000,Bairaha Farms PLC,XGBoost,43.25,64.41,17.49,20.86,48.46,6.42,9.48,"(1, 1, 1)","(0, 0, 0, 5)",3.23,722,181,True,False,price_models_enhanced/BFL.N0000_xgboost.joblib,N/A
+RWSL.N0000,Raigam Wayamba Salterns PLC ,SARIMAX,5.59,8.55,29.83,5.97,8.88,31.58,31.48,"(2, 1, 2)","(0, 0, 0, 5)",4.64,723,181,True,False,price_models_enhanced/RWSL.N0000_sarimax.joblib,N/A
+DIPP.N0000,Dipped Products PLC,XGBoost,10.75,12.0,17.98,2.6,3.49,4.52,4.78,"(1, 0, 1)","(1, 0, 1, 5)",3.86,724,181,True,False,price_models_enhanced/DIPP.N0000_xgboost.joblib,N/A
+MGT.N0000,Hayleys Fabric PLC,XGBoost,20.71,24.91,46.38,0.53,0.8,1.2,1.66,"(2, 0, 2)","(0, 0, 1, 20)",20.8,724,182,False,False,price_models_enhanced/MGT.N0000_xgboost.joblib,N/A
+HEXP.N0000,Hayleys Fibre PLC,XGBoost,14.0,24.97,16.61,4.72,9.23,5.24,8.03,"(1, 0, 1)","(1, 0, 1, 10)",8.91,717,180,False,False,price_models_enhanced/HEXP.N0000_xgboost.joblib,N/A

@@ -1,0 +1,11 @@
+Company,Company_Name,MAE,RMSE,MAPE,Best_Order,Best_Seasonal,AIC,Training_Size,Testing_Size,Price_Correlation,Model_Path
+MCPL.N0000,Mahaweli Coconut Plantations PLC,5.52,7.33,12.18,"(2, 1, 2)","(1, 0, 1, 5)",2068.7,648,163,-0.116,price_models_sarimax/MCPL.N0000_sarimax.joblib
+WATA.N0000,Watawala Plantations PLC,87.6,93.39,264.22,"(2, 1, 2)","(1, 0, 1, 5)",3459.15,721,181,-0.0273,price_models_sarimax/WATA.N0000_sarimax.joblib
+AGPL.N0000,Agarapatana Plantations PLC,4.46,4.81,21.45,"(1, 0, 0)","(0, 0, 0, 5)",32.64,409,103,-0.0214,price_models_sarimax/AGPL.N0000_sarimax.joblib
+HAPU.N0000,Hapugastenne Plantations PLC ,6.71,8.77,12.63,"(2, 1, 2)","(0, 0, 1, 5)",2821.62,678,170,-0.0579,price_models_sarimax/HAPU.N0000_sarimax.joblib
+KOTA.N0000,Kotagala Plantations PLC,0.71,0.81,7.81,"(2, 1, 2)","(0, 0, 1, 5)",-102.47,724,182,0.0343,price_models_sarimax/KOTA.N0000_sarimax.joblib
+BFL.N0000,Bairaha Farms PLC,43.22,66.73,16.94,"(2, 1, 2)","(0, 0, 1, 5)",4092.66,722,181,0.0047,price_models_sarimax/BFL.N0000_sarimax.joblib
+RWSL.N0000,Raigam Wayamba Salterns PLC ,5.61,8.56,29.93,"(0, 1, 1)","(1, 0, 0, 5)",-346.51,723,181,0.0306,price_models_sarimax/RWSL.N0000_sarimax.joblib
+DIPP.N0000,Dipped Products PLC,5.66,7.02,9.32,"(2, 1, 2)","(0, 0, 1, 5)",1851.05,724,181,0.114,price_models_sarimax/DIPP.N0000_sarimax.joblib
+MGT.N0000,Hayleys Fabric PLC,8.76,9.43,20.03,"(0, 1, 2)","(0, 0, 1, 5)",1880.46,724,182,0.2678,price_models_sarimax/MGT.N0000_sarimax.joblib
+HEXP.N0000,Hayleys Fibre PLC,13.08,20.45,17.23,"(1, 1, 2)","(0, 0, 1, 5)",2926.23,717,180,-0.1491,price_models_sarimax/HEXP.N0000_sarimax.joblib
