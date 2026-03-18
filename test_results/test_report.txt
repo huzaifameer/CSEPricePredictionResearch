@@ -1,0 +1,84 @@
+================================================================================
+MODEL PERFORMANCE TEST REPORT
+================================================================================
+
+Report Generated: 2026-03-19 01:05:02
+Companies Tested: 10
+
+================================================================================
+EXECUTIVE SUMMARY
+================================================================================
+
+Model Performance Summary:
+  • EXCELLENT (MAPE < 3%): 1 companies
+  • GOOD (MAPE 3-5%): 1 companies
+  • ACCEPTABLE (MAPE 5-10%): 2 companies
+  • POOR (MAPE > 10%): 6 companies
+
+Best Performing Model: XGBOOST
+Average MAPE across all models: 3303.07%
+
+================================================================================
+DETAILED COMPANY RESULTS
+================================================================================
+
+
+Hapugastenne Plantations PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 1.63%
+  • RATING: ⭐ EXCELLENT
+  • RECOMMENDATION: Can be used for trading decisions
+
+Dipped Products PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 3.59%
+  • RATING: ✅ GOOD
+  • RECOMMENDATION: Good for trend analysis
+
+Bairaha Farms PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 6.42%
+  • RATING: ⚠️ ACCEPTABLE
+  • RECOMMENDATION: Use with caution
+
+Agarapatana Plantations PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 8.96%
+  • RATING: ⚠️ ACCEPTABLE
+  • RECOMMENDATION: Use with caution
+
+Hayleys Fibre PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 39.43%
+  • RATING: ❌ POOR
+  • RECOMMENDATION: Needs improvement, don't use
+
+Hayleys Fabric PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 54.26%
+  • RATING: ❌ POOR
+  • RECOMMENDATION: Needs improvement, don't use
+
+Mahaweli Coconut Plantations PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 59.71%
+  • RATING: ❌ POOR
+  • RECOMMENDATION: Needs improvement, don't use
+
+Watawala Plantations PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 172.56%
+  • RATING: ❌ POOR
+  • RECOMMENDATION: Needs improvement, don't use
+
+Raigam Wayamba Salterns PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 179.95%
+  • RATING: ❌ POOR
+  • RECOMMENDATION: Needs improvement, don't use
+
+Kotagala Plantations PLC:
+  • Best Model: XGBOOST
+  • Test MAPE: 259.00%
+  • RATING: ❌ POOR
+  • RECOMMENDATION: Needs improvement, don't use
