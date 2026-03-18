@@ -109,8 +109,8 @@ out/
 # =================================================================
 # 1. Saved Models (These can be very large)
 *.pkl
-*.pickle
-*.joblib
+#*.pickle
+#*.joblib
 *.h5
 *.hdf5
 *.pth
@@ -306,15 +306,15 @@ gcloud/
 # Your specific project files that shouldn't be committed
 
 # Trained SVM models (10 company-specific models)
-svm_models/
-sentiment_models/
-*_svm_model.pkl
-*_svm_model.joblib
+#svm_models/
+#sentiment_models/
+#*_svm_model.pkl
+#*_svm_model.joblib
 
 # Trained SARIMAX models (10 company-specific models)
 
-*_sarimax_model.pkl
-*_sarimax_model.joblib
+#*_sarimax_model.pkl
+#*_sarimax_model.joblib
 
 # TF-IDF vectorizers
 vectorizers/
