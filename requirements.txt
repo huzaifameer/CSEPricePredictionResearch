@@ -7,3 +7,4 @@ matplotlib>=3.7
 streamlit>=1.30
 notebook>=7.0
 ipykernel>=6.25
+plotly
