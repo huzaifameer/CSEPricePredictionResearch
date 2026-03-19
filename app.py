@@ -10,7 +10,20 @@ import plotly.express as px
 from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
+from huggingface_hub import snapshot_download
 
+@st.cache_resource
+def download_models():
+    local_dir = snapshot_download(
+        repo_id="huzaifaameer/huzaifaameer/sinhala-news-sentinel",
+        repo_type="model"
+    )
+    return local_dir
+
+BASE_PATH = download_models()
+
+SENTIMENT_MODEL_PATH = os.path.join(BASE_PATH, "saved_models")
+PRICE_MODEL_PATH = os.path.join(BASE_PATH, "price_models_final_v3")
 # ===============================
 # PAGE CONFIG
 # ===============================
