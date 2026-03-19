@@ -11,19 +11,92 @@ from datetime import datetime, timedelta
 import warnings
 warnings.filterwarnings('ignore')
 from huggingface_hub import snapshot_download
+import tempfile
+
+# ===============================
+# HUGGING FACE MODEL DOWNLOAD - FIXED
+# ===============================
 
 @st.cache_resource
 def download_models():
-    local_dir = snapshot_download(
-        repo_id="huzaifaameer/huzaifaameer/sinhala-news-sentinel",
-        repo_type="model"
-    )
-    return local_dir
+    """
+    Download models from Hugging Face with correct repo ID format
+    """
+    # CORRECT FORMAT: "username/repo_name" (no extra slashes)
+    REPO_ID = "huzaifaameer/sinhala-news-sentinel"  # Fixed: removed duplicate username
+    
+    try:
+        # Create a temporary directory to store models
+        with tempfile.TemporaryDirectory() as tmpdir:
+            st.info("📥 Downloading models from Hugging Face... This may take a moment.")
+            
+            # Download the entire repository
+            local_dir = snapshot_download(
+                repo_id=REPO_ID,
+                repo_type="space",
+                local_dir=os.path.join(tmpdir, "models"),
+                local_dir_use_symlinks=False
+            )
+            
+            st.success("✅ Models downloaded successfully!")
+            return local_dir
+            
+    except Exception as e:
+        st.error(f"❌ Failed to download models: {str(e)}")
+        st.warning("⚠️ Using local models instead. Make sure they exist in the correct paths.")
+        
+        # Fallback to local paths
+        return "."  # Current directory
 
-BASE_PATH = download_models()
+# Try to download models, fallback to local if fails
+try:
+    BASE_PATH = download_models()
+except:
+    BASE_PATH = "."
+    st.warning("⚠️ Using local models. Ensure 'saved_models/' and 'price_models_final_v3/' exist.")
 
+# Set model paths
 SENTIMENT_MODEL_PATH = os.path.join(BASE_PATH, "saved_models")
 PRICE_MODEL_PATH = os.path.join(BASE_PATH, "price_models_final_v3")
+
+# Alternative: If you want to use a persistent local directory instead of temp
+@st.cache_resource
+def download_models_persistent():
+    """
+    Download models to a persistent local cache directory
+    """
+    REPO_ID = "huzaifaameer/sinhala-news-sentinel"
+    
+    # Create a persistent cache directory in the user's home
+    cache_dir = os.path.join(os.path.expanduser("~"), ".cache", "sinhala-news-sentinel")
+    os.makedirs(cache_dir, exist_ok=True)
+    
+    model_path = os.path.join(cache_dir, "models")
+    
+    # Only download if not already present
+    if not os.path.exists(model_path) or not os.listdir(model_path):
+        st.info("📥 Downloading models from Hugging Face... This may take a moment.")
+        local_dir = snapshot_download(
+            repo_id=REPO_ID,
+            repo_type="space",
+            local_dir=model_path,
+            local_dir_use_symlinks=False
+        )
+        st.success("✅ Models downloaded successfully!")
+    else:
+        st.info("✅ Using cached models from previous download.")
+    
+    return model_path
+
+# Use persistent download (better for production)
+try:
+    MODEL_CACHE_PATH = download_models_persistent()
+    SENTIMENT_MODEL_PATH = os.path.join(MODEL_CACHE_PATH, "saved_models")
+    PRICE_MODEL_PATH = os.path.join(MODEL_CACHE_PATH, "price_models_final_v3")
+except Exception as e:
+    st.error(f"❌ Model download failed: {str(e)}")
+    st.stop()
+
 # ===============================
 # PAGE CONFIG
 # ===============================
@@ -292,8 +365,6 @@ st.markdown("""
 # ===============================
 
 STOPWORDS_PATH      = "./data/stop words.txt"
-SENTIMENT_MODEL_PATH = "saved_models"
-PRICE_MODEL_PATH    = "price_models_final_v3"
 
 @st.cache_resource
 def load_stopwords():
@@ -359,6 +430,13 @@ def load_all_models():
                                 'xgboost_scalers','lightgbm_scalers','hybrid_scalers',
                                 'xgboost_features','lightgbm_features','hybrid_weights','metadata']}
     status = {k: {} for k in ['sentiment','xgboost','sarimax','lightgbm','hybrid']}
+
+    # Check if model directories exist
+    if not os.path.exists(SENTIMENT_MODEL_PATH):
+        st.warning(f"⚠️ Sentiment model path not found: {SENTIMENT_MODEL_PATH}")
+    
+    if not os.path.exists(PRICE_MODEL_PATH):
+        st.warning(f"⚠️ Price model path not found: {PRICE_MODEL_PATH}")
 
     # Sentiment
     for company in companies:
