@@ -1,0 +1,11 @@
+Company,Company_Name,Best_Model,Best_MAPE,XGBoost_MAPE,SARIMAX_MAPE,LightGBM_MAPE,Hybrid_MAPE,Was_Split,Split_Ratio,Train_Size,Test_Size
+MCPL.N0000,Mahaweli Coconut Plantations PLC,XGBoost,0.18,0.18,13.66,4.91,N/A,False,1.0,648,163
+WATA.N0000,Watawala Plantations PLC,XGBoost,0.56,0.56,14.43,16.49,15.91,True,5.0,721,181
+AGPL.N0000,Agarapatana Plantations PLC,XGBoost,0.3,0.3,21.8,10.0,N/A,False,1.0,409,103
+HAPU.N0000,Hapugastenne Plantations PLC,XGBoost,0.25,0.25,12.43,1.58,N/A,False,1.0,678,170
+KOTA.N0000,Kotagala Plantations PLC,XGBoost,0.22,0.22,7.08,1.17,N/A,False,1.0,724,182
+BFL.N0000,Bairaha Farms PLC,XGBoost,0.64,0.64,16.31,9.87,10.1,True,5.0,722,181
+RWSL.N0000,Raigam Wayamba Salterns PLC,XGBoost,1.82,1.82,29.73,30.58,31.14,False,1.0,723,181
+DIPP.N0000,Dipped Products PLC,XGBoost,0.24,0.24,11.48,5.52,N/A,False,1.0,724,181
+MGT.N0000,Hayleys Fabric PLC,XGBoost,0.18,0.18,21.99,0.64,N/A,False,1.0,724,182
+HEXP.N0000,Hayleys Fibre PLC,XGBoost,0.42,0.42,16.48,4.85,N/A,False,1.0,717,180
