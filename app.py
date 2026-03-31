@@ -1320,48 +1320,21 @@ def download_models_persistent():
         )
     return model_path
 
-_loading_placeholder = st.empty()
-with _loading_placeholder.container():
-    st.markdown("""
-    <style>
-    .load-screen {
-        display:flex;flex-direction:column;align-items:center;justify-content:center;
-        min-height:60vh;gap:1.2rem;
-    }
-    .load-spinner {
-        width:44px;height:44px;border:3px solid #e2e8f0;
-        border-top:3px solid #1e40af;border-radius:50%;
-        animation:spin 0.9s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .load-title{font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:600;color:#1e293b;}
-    .load-sub{font-family:'DM Sans',sans-serif;font-size:0.82rem;color:#64748b;}
-    </style>
-    <div class="load-screen">
-        <div class="load-spinner"></div>
-        <div class="load-title">Starting SentiTrade</div>
-        <div class="load-sub">Loading intelligence models, please wait…</div>
-    </div>
-    """, unsafe_allow_html=True)
-
 try:
     MODEL_CACHE_PATH = download_models_persistent()
     SENTIMENT_MODEL_PATH = os.path.join(MODEL_CACHE_PATH, "saved_models")
     PRICE_MODEL_PATH = os.path.join(MODEL_CACHE_PATH, "price_models_final_v3")
 except Exception as e:
-    MODEL_CACHE_PATH = "."
-    SENTIMENT_MODEL_PATH = os.path.join(".", "saved_models")
-    PRICE_MODEL_PATH = os.path.join(".", "price_models_final_v3")
-
-_loading_placeholder.empty()
+    SENTIMENT_MODEL_PATH = "./saved_models"
+    PRICE_MODEL_PATH = "./price_models_final_v3"
 
 # ===============================
 # PAGE CONFIG
 # ===============================
 
 st.set_page_config(
-    page_title="SentiTrade · CSE Analytics",
-    page_icon="📈",
+    page_title="SentiTrade",
+    page_icon="📰",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -1372,327 +1345,310 @@ st.set_page_config(
 
 if "lang" not in st.session_state:
     st.session_state.lang = "si"
-if "nav_page" not in st.session_state:
-    st.session_state.nav_page = "home"
 
 def t(si_text, en_text):
     return si_text if st.session_state.lang == "si" else en_text
 
 # ===============================
-# GLOBAL STYLES
+# THEME & STYLING
 # ===============================
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Noto+Sans+Sinhala:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sinhala:wght@300;400;500;600;700&family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
-:root {
-    --navy:      #0f172a;
-    --navy-2:    #1e293b;
-    --navy-3:    #273549;
-    --slate:     #334155;
-    --border:    #e2e8f0;
-    --border-d:  #334155;
-    --blue:      #1d4ed8;
-    --blue-lt:   #3b82f6;
-    --blue-dim:  rgba(29,78,216,0.08);
-    --blue-glow: rgba(29,78,216,0.22);
-    --sky:       #0ea5e9;
-    --green:     #059669;
-    --red:       #dc2626;
-    --amber:     #d97706;
-    --txt-dark:  #0f172a;
-    --txt-mid:   #475569;
-    --txt-light: #94a3b8;
-    --bg:        #f8fafc;
-    --surface:   #ffffff;
-    --surface-2: #f1f5f9;
-    --r:         10px;
-    --rl:        16px;
-}
+    :root {
+        --bg:           #080e1a;
+        --surface:      #0d1520;
+        --surface-2:    #111d2e;
+        --surface-3:    #162438;
+        --border:       #1e3050;
+        --border-soft:  #152540;
 
-html, body, [class*="css"] {
-    font-family: 'DM Sans', 'Noto Sans Sinhala', sans-serif !important;
-    background: var(--bg) !important;
-    color: var(--txt-dark) !important;
-    -webkit-font-smoothing: antialiased;
-}
-h1,h2,h3,h4,h5,h6 { font-family:'DM Sans','Noto Sans Sinhala',sans-serif; }
-#MainMenu, footer, header { visibility:hidden; }
+        --blue:         #3d7fff;
+        --blue-dim:     rgba(61,127,255,0.12);
+        --blue-glow:    rgba(61,127,255,0.28);
+        --blue-light:   #93bbff;
+        --teal:         #0fd4a0;
+        --amber:        #f0b429;
+        --rose:         #f04f63;
 
-::-webkit-scrollbar { width:5px; height:5px; }
-::-webkit-scrollbar-track { background:#f1f5f9; }
-::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:3px; }
+        --txt-1: #dce8f8;
+        --txt-2: #7a9dbf;
+        --txt-3: #3d5570;
 
-/* ── NAV ── */
-.topnav {
-    display:flex;align-items:center;justify-content:space-between;
-    background:var(--surface);border-bottom:1px solid var(--border);
-    padding:0 2rem;height:60px;position:sticky;top:0;z-index:999;
-    box-shadow:0 1px 4px rgba(0,0,0,0.06);
-}
-.nav-brand {
-    display:flex;align-items:center;gap:10px;
-    font-weight:700;font-size:1.05rem;color:var(--navy);letter-spacing:-0.3px;
-}
-.nav-brand-dot { width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0; }
-.nav-links { display:flex;align-items:center;gap:4px; }
-.nav-link {
-    padding:6px 14px;border-radius:8px;font-size:0.84rem;font-weight:500;
-    color:var(--txt-mid);cursor:pointer;transition:all 0.15s;text-decoration:none;border:none;
-    background:transparent;
-}
-.nav-link:hover { background:var(--surface-2);color:var(--navy); }
-.nav-link.active { background:var(--blue-dim);color:var(--blue);font-weight:600; }
-.nav-right { display:flex;align-items:center;gap:10px; }
-.nav-badge {
-    font-size:0.68rem;font-weight:700;color:var(--txt-light);
-    letter-spacing:0.06em;background:var(--surface-2);
-    padding:3px 9px;border-radius:20px;border:1px solid var(--border);
-}
+        --r:  12px;
+        --rl: 18px;
+    }
 
-/* ── PAGE WRAPPER ── */
-.page-wrap { max-width:1140px;margin:0 auto;padding:2rem 1.25rem; }
+    html, body, [class*="css"] {
+        font-family: 'Sora', 'Noto Sans Sinhala', sans-serif !important;
+        background: var(--bg) !important;
+        color: var(--txt-1) !important;
+        -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3,h4,h5,h6 { font-family: 'Sora','Noto Sans Sinhala',sans-serif; }
+    code, pre           { font-family: 'JetBrains Mono', monospace; }
+    #MainMenu, footer, header { visibility: hidden; }
 
-/* ── HERO ── */
-.hero-wrap {
-    background:var(--navy);border-radius:var(--rl);
-    padding:3.5rem 3rem;margin-bottom:2rem;
-    position:relative;overflow:hidden;
-}
-.hero-wrap::before {
-    content:'';position:absolute;inset:0;
-    background:radial-gradient(ellipse 70% 80% at 90% 50%,
-        rgba(29,78,216,0.35) 0%,transparent 65%);
-    pointer-events:none;
-}
-.hero-wrap::after {
-    content:'';position:absolute;bottom:-40px;right:-30px;
-    width:220px;height:220px;border-radius:50%;
-    background:rgba(14,165,233,0.08);
-    pointer-events:none;
-}
-.hero-label {
-    display:inline-flex;align-items:center;gap:7px;
-    font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-    color:rgba(148,163,184,0.9);margin-bottom:1.1rem;
-}
-.hero-label span {
-    width:5px;height:5px;border-radius:50%;background:#3b82f6;display:inline-block;
-}
-.hero-title {
-    font-size:clamp(2rem,3.5vw,3.1rem);font-weight:700;
-    color:#f1f5f9;line-height:1.12;letter-spacing:-0.8px;
-    margin:0 0 0.8rem;
-}
-.hero-title em { font-style:normal;color:#93c5fd; }
-.hero-desc {
-    color:rgba(148,163,184,0.85);font-size:0.97rem;
-    line-height:1.8;max-width:560px;margin:0;
-}
-.hero-stats {
-    display:flex;gap:2rem;margin-top:2.5rem;flex-wrap:wrap;
-}
-.hero-stat-val {
-    font-size:1.5rem;font-weight:700;color:#f1f5f9;line-height:1;
-}
-.hero-stat-lbl {
-    font-size:0.72rem;color:rgba(148,163,184,0.7);
-    margin-top:3px;letter-spacing:0.04em;
-}
+    ::-webkit-scrollbar { width:5px; height:5px; }
+    ::-webkit-scrollbar-track  { background: var(--surface); }
+    ::-webkit-scrollbar-thumb  { background: var(--blue); border-radius:3px; }
 
-/* ── SECTION HEADER ── */
-.sec-hdr {
-    display:flex;align-items:center;gap:10px;
-    margin:2.5rem 0 1.2rem;padding-bottom:0.75rem;
-    border-bottom:1px solid var(--border);
-}
-.sec-hdr-title {
-    font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
-    color:var(--txt-mid);
-}
-.sec-hdr-line { flex:1;height:1px;background:var(--border); }
+    /* HERO */
+    .hero {
+        background: linear-gradient(135deg, #0d1d38 0%, #080e1a 100%);
+        border: 1px solid var(--border);
+        border-radius: var(--rl);
+        padding: 2.8rem 2.5rem 2.4rem;
+        position: relative; overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+    .hero::before {
+        content:''; position:absolute; inset:0;
+        background: radial-gradient(ellipse 60% 70% at 90% 50%, rgba(61,127,255,0.07) 0%, transparent 65%);
+        pointer-events:none;
+    }
+    .hero-eyebrow {
+        font-size: 0.68rem; font-weight: 700; letter-spacing: 0.15em;
+        text-transform: uppercase; color: var(--blue-light);
+        margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px;
+    }
+    .hero-eyebrow::before {
+        content:''; display:inline-block; width:22px; height:2px;
+        background: var(--blue); border-radius:1px;
+    }
+    .hero-title {
+        font-size: clamp(1.9rem, 4vw, 2.9rem);
+        font-weight: 800; color: var(--txt-1);
+        margin: 0 0 0.5rem; line-height: 1.1; letter-spacing: -0.03em;
+    }
+    .hero-title .accent {
+        background: linear-gradient(90deg, #3d7fff 0%, #6ee7f7 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+        color: var(--txt-2); font-size: 0.92rem;
+        margin: 0 0 1.2rem; line-height: 1.75; max-width: 600px; font-weight: 400;
+    }
+    .hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .hero-tag {
+        background: var(--blue-dim); border: 1px solid rgba(61,127,255,0.22);
+        color: var(--blue-light); font-size: 0.7rem; font-weight: 600;
+        padding: 3px 10px; border-radius: 20px; letter-spacing: 0.04em;
+    }
+    .hero-version {
+        position: absolute; top: 1.4rem; right: 1.8rem;
+        font-size: 0.7rem; color: var(--txt-3); font-weight: 600;
+        letter-spacing: 0.08em; font-family: 'JetBrains Mono', monospace;
+    }
 
-/* ── CARD ── */
-.card {
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--rl);padding:1.5rem;
-    box-shadow:0 1px 3px rgba(0,0,0,0.04);
-}
-.card-accent { border-left:3px solid var(--blue); }
+    /* HOW IT WORKS */
+    .how-card {
+        background: var(--surface-2); border: 1px solid var(--border);
+        border-radius: var(--rl); padding: 1.8rem; margin-bottom: 1.5rem;
+    }
+    .how-card h3 {
+        color: var(--txt-1); font-size: 1rem; font-weight: 700;
+        margin: 0 0 1.2rem;
+    }
+    .how-steps {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;
+    }
+    .how-step {
+        background: var(--surface-3); border: 1px solid var(--border-soft);
+        border-radius: var(--r); padding: 1.1rem 1rem;
+    }
+    .how-step-num {
+        width: 26px; height: 26px; border-radius: 50%;
+        background: var(--blue-dim); border: 1px solid rgba(61,127,255,0.3);
+        color: var(--blue-light); font-size: 0.72rem; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; margin-bottom: 0.65rem;
+    }
+    .how-step h4 { color: var(--txt-1); font-size: 0.84rem; font-weight: 700; margin: 0 0 0.3rem; }
+    .how-step p  { color: var(--txt-2); font-size: 0.78rem; line-height: 1.65; margin: 0; }
 
-/* ── INFO BOX ── */
-.info-box {
-    background:#eff6ff;border:1px solid #bfdbfe;
-    border-radius:var(--r);padding:1rem 1.2rem;
-    margin:0.75rem 0;color:#1e40af;font-size:0.87rem;line-height:1.75;
-}
-.warn-box {
-    background:#fffbeb;border:1px solid #fde68a;
-    border-radius:var(--r);padding:1rem 1.2rem;
-    margin:0.75rem 0;color:#92400e;font-size:0.87rem;line-height:1.75;
-}
-.success-box {
-    background:#ecfdf5;border:1px solid #a7f3d0;
-    border-radius:var(--r);padding:1rem 1.2rem;
-    margin:0.75rem 0;color:#065f46;font-size:0.87rem;line-height:1.75;
-}
+    /* INSTRUCTION PANEL */
+    .instr-panel {
+        background: var(--surface-2); border: 1px solid var(--border);
+        border-left: 3px solid var(--blue);
+        border-radius: var(--rl); padding: 1.6rem 1.8rem; margin-bottom: 1rem;
+    }
+    .instr-panel h3 {
+        color: var(--txt-1); font-size: 0.95rem; font-weight: 700; margin: 0 0 1rem;
+    }
+    .instr-row {
+        display: flex; align-items: flex-start; gap: 12px;
+        padding: 0.6rem 0; border-bottom: 1px solid var(--border-soft);
+    }
+    .instr-row:last-child { border-bottom: none; }
+    .instr-num {
+        min-width: 22px; height: 22px; border-radius: 50%;
+        background: var(--blue); color: #fff; font-size: 0.68rem; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .instr-text { color: var(--txt-2); font-size: 0.84rem; line-height: 1.65; }
+    .instr-text strong { color: var(--txt-1); }
 
-/* ── STATUS DOTS ── */
-.dot { width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle; }
-.dot-on  { background:#10b981; }
-.dot-off { background:#ef4444; }
-.dot-warn{ background:#f59e0b; }
+    /* SECTION HEADERS */
+    .sec-hdr {
+        font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+        text-transform: uppercase; color: var(--txt-3);
+        margin: 2rem 0 1rem; padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex; align-items: center; gap: 8px;
+    }
+    .sec-hdr span { color: var(--blue-light); }
 
-/* ── METRIC CARDS ── */
-.metric-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem; }
-.metric-card {
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--rl);padding:1.25rem 1.4rem;
-    box-shadow:0 1px 3px rgba(0,0,0,0.04);
-}
-.metric-val { font-size:1.65rem;font-weight:700;color:var(--navy);line-height:1; }
-.metric-lbl { font-size:0.74rem;color:var(--txt-mid);margin-top:5px;font-weight:500;letter-spacing:0.02em; }
-.metric-delta-up { font-size:0.78rem;color:var(--green);font-weight:600;margin-top:3px; }
-.metric-delta-dn { font-size:0.78rem;color:var(--red);font-weight:600;margin-top:3px; }
+    /* INFO / WARN */
+    .info-box {
+        background: var(--blue-dim); border: 1px solid rgba(61,127,255,0.22);
+        border-radius: var(--r); padding: 0.85rem 1.1rem;
+        margin: 0.8rem 0; color: var(--txt-2); font-size: 0.84rem; line-height: 1.75;
+    }
+    .info-box strong { color: var(--blue-light); }
+    .warn-box {
+        background: rgba(240,180,41,0.06); border: 1px solid rgba(240,180,41,0.22);
+        border-radius: var(--r); padding: 0.85rem 1.1rem;
+        margin: 0.8rem 0; color: var(--txt-2); font-size: 0.84rem; line-height: 1.75;
+    }
+    .warn-box strong { color: var(--amber); }
 
-/* ── OPP / MONITOR CARDS ── */
-.opp-card {
-    background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--rl);
-    padding:1.2rem 1.35rem;margin-bottom:0.75rem;
-}
-.opp-card-title { font-size:0.92rem;font-weight:700;color:#065f46;margin:0 0 0.5rem; }
-.mon-card {
-    background:#fff1f2;border:1px solid #fecdd3;border-radius:var(--rl);
-    padding:1.2rem 1.35rem;margin-bottom:0.75rem;
-}
-.mon-card-title { font-size:0.92rem;font-weight:700;color:#9f1239;margin:0 0 0.5rem; }
-.card-row { font-size:0.82rem;color:var(--txt-mid);margin:0.25rem 0;line-height:1.6; }
-.card-row strong { color:var(--navy); }
-.tag-green { color:var(--green);font-weight:700; }
-.tag-red   { color:var(--red);font-weight:700; }
+    /* RESULT CARDS */
+    .opp-card {
+        background: rgba(15,212,160,0.06); border: 1px solid rgba(15,212,160,0.18);
+        border-radius: var(--r); padding: 1.1rem 1.2rem; margin-bottom: 0.65rem;
+    }
+    .opp-card h4 { color: var(--teal); margin: 0 0 0.3rem; font-size: 0.9rem; font-weight: 700; }
+    .mon-card {
+        background: rgba(240,79,99,0.06); border: 1px solid rgba(240,79,99,0.18);
+        border-radius: var(--r); padding: 1.1rem 1.2rem; margin-bottom: 0.65rem;
+    }
+    .mon-card h4 { color: var(--rose); margin: 0 0 0.3rem; font-size: 0.9rem; font-weight: 700; }
+    .c-row  { color: var(--txt-2); font-size: 0.8rem; margin: 0.18rem 0; }
+    .c-row strong { color: var(--txt-1); }
+    .tg { color: var(--teal); font-weight: 700; }
+    .tr { color: var(--rose); font-weight: 700; }
 
-/* ── HOW IT WORKS (instruction page) ── */
-.how-step {
-    display:flex;gap:1.25rem;align-items:flex-start;
-    background:var(--surface);border:1px solid var(--border);
-    border-radius:var(--rl);padding:1.4rem 1.5rem;margin-bottom:0.9rem;
-}
-.step-num {
-    min-width:36px;height:36px;border-radius:50%;
-    background:var(--navy);color:#fff;font-weight:700;
-    font-size:0.88rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.step-title { font-weight:700;color:var(--navy);font-size:0.95rem;margin:0 0 0.3rem; }
-.step-desc  { color:var(--txt-mid);font-size:0.87rem;line-height:1.7;margin:0; }
+    /* STATUS */
+    .dot { width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle; }
+    .dot-on  { background:var(--teal);  box-shadow:0 0 5px rgba(15,212,160,0.5); }
+    .dot-off { background:var(--rose);  box-shadow:0 0 5px rgba(240,79,99,0.4); }
 
-/* ── FOOTER ── */
-.footer {
-    border-top:1px solid var(--border);margin-top:4rem;
-    padding:2rem 0 2.5rem;
-}
-.footer-inner {
-    display:flex;flex-wrap:wrap;justify-content:space-between;
-    align-items:flex-start;gap:1.5rem;
-}
-.footer-brand { font-weight:700;font-size:0.98rem;color:var(--navy);margin-bottom:4px; }
-.footer-sub   { font-size:0.78rem;color:var(--txt-light); }
-.footer-right { text-align:right; }
-.footer-right a { color:var(--blue);text-decoration:none;font-weight:600;font-size:0.82rem; }
-.footer-legal {
-    margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--border);
-    font-size:0.74rem;color:var(--txt-light);line-height:1.8;
-}
+    /* FOOTER */
+    .footer-bar {
+        border-top: 1px solid var(--border); margin-top: 3rem; padding: 2rem 0 1.5rem;
+        display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center;
+    }
+    .footer-left { color: var(--txt-3); font-size: 0.78rem; line-height: 1.9; }
+    .footer-left strong { color: var(--txt-2); font-size: 0.82rem; }
+    .footer-left a { color: var(--blue-light); text-decoration: none; }
+    .footer-right {
+        text-align: right; color: var(--txt-3); font-size: 0.72rem;
+        font-family: 'JetBrains Mono', monospace;
+    }
 
-/* ── STREAMLIT OVERRIDES ── */
-.main .block-container { padding:0 !important;max-width:100% !important; }
-.main { background:var(--bg) !important; }
-[data-testid="stSidebar"] {
-    background:var(--surface) !important;
-    border-right:1px solid var(--border) !important;
-}
-[data-testid="stSidebar"] * { color:var(--txt-dark) !important; }
+    /* STREAMLIT OVERRIDES */
+    .main { background: var(--bg) !important; }
+    [data-testid="stSidebar"] {
+        background: var(--surface) !important;
+        border-right: 1px solid var(--border) !important;
+    }
+    [data-testid="stSidebar"] > div { padding-top: 0 !important; }
 
-.stTextArea textarea {
-    background:var(--surface) !important;color:var(--txt-dark) !important;
-    border:1px solid var(--border) !important;border-radius:var(--r) !important;
-    font-family:'Noto Sans Sinhala','DM Sans',sans-serif !important;
-    font-size:0.92rem !important;line-height:1.7 !important;
-    box-shadow:none !important;
-}
-.stTextArea textarea:focus {
-    border-color:var(--blue) !important;
-    box-shadow:0 0 0 3px var(--blue-dim) !important;
-}
+    .stTextArea textarea {
+        background: var(--surface-2) !important; color: var(--txt-1) !important;
+        border: 1px solid var(--border) !important; border-radius: var(--r) !important;
+        font-family: 'Noto Sans Sinhala','Sora',sans-serif !important;
+        font-size: 0.9rem !important; line-height: 1.7 !important;
+    }
+    .stTextArea textarea:focus {
+        border-color: var(--blue) !important;
+        box-shadow: 0 0 0 3px var(--blue-dim) !important; outline: none !important;
+    }
+    .stTextArea textarea::placeholder { color: var(--txt-3) !important; }
 
-.stButton > button {
-    background:var(--navy) !important;color:#fff !important;
-    border:none !important;border-radius:var(--r) !important;
-    font-weight:600 !important;font-size:0.87rem !important;
-    padding:0.65rem 1.5rem !important;transition:all 0.18s !important;
-    letter-spacing:0.01em;
-}
-.stButton > button:hover {
-    background:var(--blue) !important;
-    box-shadow:0 4px 16px var(--blue-glow) !important;
-    transform:translateY(-1px) !important;
-}
-.stButton[data-testid*="primary"] > button {
-    background:var(--blue) !important;
-}
+    .stButton > button {
+        background: linear-gradient(135deg, #3d7fff 0%, #2563eb 100%) !important;
+        color: #fff !important; border: none !important;
+        border-radius: var(--r) !important; font-weight: 600 !important;
+        font-size: 0.86rem !important; padding: 0.65rem 1.4rem !important;
+        transition: all 0.2s ease !important;
+        font-family: 'Sora', sans-serif !important;
+    }
+    .stButton > button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px var(--blue-glow) !important;
+    }
 
-.stNumberInput input {
-    background:var(--surface) !important;color:var(--txt-dark) !important;
-    border:1px solid var(--border) !important;border-radius:8px !important;
-}
+    .stNumberInput input {
+        background: var(--surface-2) !important; color: var(--txt-1) !important;
+        border: 1px solid var(--border) !important; border-radius: 8px !important;
+        font-family: 'JetBrains Mono', monospace !important;
+    }
 
-.stTabs [data-baseweb="tab-list"] {
-    gap:3px;background:var(--surface-2);
-    padding:4px;border-radius:var(--r);
-    border:1px solid var(--border);
-}
-.stTabs [data-baseweb="tab"] {
-    background:transparent !important;color:var(--txt-mid) !important;
-    border-radius:7px !important;padding:0.5rem 1.1rem !important;
-    font-weight:500;font-size:0.85rem;
-}
-.stTabs [aria-selected="true"] {
-    background:var(--surface) !important;color:var(--navy) !important;
-    font-weight:600 !important;
-    box-shadow:0 1px 3px rgba(0,0,0,0.08) !important;
-}
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 4px; background: var(--surface-2); padding: 4px;
+        border-radius: var(--r); border: 1px solid var(--border);
+    }
+    .stTabs [data-baseweb="tab"] {
+        background: transparent !important; color: var(--txt-2) !important;
+        border-radius: 9px !important; padding: 0.5rem 1.1rem !important;
+        font-weight: 500 !important; font-size: 0.84rem !important;
+        font-family: 'Sora', sans-serif !important;
+    }
+    .stTabs [aria-selected="true"] { background: var(--blue) !important; color: #fff !important; }
 
-.streamlit-expanderHeader {
-    background:var(--surface) !important;color:var(--txt-dark) !important;
-    border:1px solid var(--border) !important;border-radius:var(--r) !important;
-    font-size:0.88rem !important;
-}
+    .streamlit-expanderHeader {
+        background: var(--surface-2) !important; color: var(--txt-1) !important;
+        border: 1px solid var(--border) !important; border-radius: var(--r) !important;
+        font-family: 'Sora', sans-serif !important;
+    }
 
-.dataframe { background:var(--surface) !important;border-radius:var(--r) !important; }
-.dataframe th {
-    background:var(--surface-2) !important;color:var(--navy) !important;
-    font-weight:600 !important;padding:0.6rem 0.8rem !important;
-    font-size:0.82rem !important;
-}
-.dataframe td {
-    background:var(--surface) !important;color:var(--txt-mid) !important;
-    padding:0.6rem 0.8rem !important;border-bottom:1px solid var(--border) !important;
-    font-size:0.83rem !important;
-}
+    .stProgress > div > div {
+        background: linear-gradient(90deg, var(--blue) 0%, var(--teal) 100%);
+        border-radius: 3px; height: 4px !important;
+    }
 
-/* Mobile */
-@media(max-width:640px){
-    .hero-wrap{padding:2rem 1.5rem;}
-    .hero-title{font-size:1.7rem;}
-    .hero-stats{gap:1.2rem;}
-    .topnav{padding:0 1rem;}
-    .nav-links{display:none;}
-    .page-wrap{padding:1.25rem 0.85rem;}
-    .metric-grid{grid-template-columns:1fr 1fr;}
-    .how-step{flex-direction:column;}
-    .footer-inner{flex-direction:column;}
-    .footer-right{text-align:left;}
-}
+    .dataframe { background: var(--surface-2) !important; border-radius: var(--r) !important; }
+    .dataframe th {
+        background: var(--surface-3) !important; color: var(--txt-1) !important;
+        font-weight: 600 !important; padding: 0.6rem !important; font-size: 0.8rem !important;
+    }
+    .dataframe td {
+        background: var(--surface-2) !important; color: var(--txt-2) !important;
+        padding: 0.6rem !important; border-bottom: 1px solid var(--border-soft) !important;
+        font-size: 0.82rem !important;
+    }
+
+    /* SIDEBAR BRAND */
+    .sidebar-brand {
+        background: var(--surface-2); border-bottom: 1px solid var(--border);
+        padding: 1.4rem 1.2rem 1.2rem; margin-bottom: 0;
+    }
+    .sidebar-label {
+        font-size: 0.64rem; font-weight: 700; letter-spacing: 0.12em;
+        text-transform: uppercase; color: var(--txt-3); margin-bottom: 5px;
+    }
+    .sidebar-name { font-size: 1.1rem; font-weight: 800; color: var(--txt-1); letter-spacing: -0.02em; }
+    .sidebar-ver { font-size: 0.67rem; color: var(--txt-3); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+    /* MOBILE RESPONSIVE */
+    @media (max-width: 768px) {
+        .hero { padding: 1.8rem 1.4rem; }
+        .hero-title { font-size: 1.7rem; }
+        .hero-version { position: static; margin-top: 0.8rem; display: block; }
+        .how-steps { grid-template-columns: 1fr; }
+        .footer-bar { grid-template-columns: 1fr; }
+        .footer-right { text-align: left; margin-top: 0.5rem; }
+        .hero-sub { font-size: 0.86rem; }
+        .instr-panel { padding: 1.2rem; }
+        .how-card { padding: 1.2rem; }
+    }
+    @media (max-width: 480px) {
+        .hero { padding: 1.4rem 1rem; }
+        .how-card, .instr-panel { padding: 1rem; }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -1701,9 +1657,8 @@ h1,h2,h3,h4,h5,h6 { font-family:'DM Sans','Noto Sans Sinhala',sans-serif; }
 # ===============================
 
 STOPWORDS_PATH = "./data/stop words.txt"
-CONFIDENCE_THRESHOLD = 0.70
 
-@st.cache_resource(show_spinner=False)
+@st.cache_resource
 def load_stopwords():
     if not os.path.exists(STOPWORDS_PATH):
         return []
@@ -1724,16 +1679,16 @@ companies = [
 BEST_MODELS = {c: 'XGBoost' for c in companies}
 
 MODEL_METRICS = {
-    'MCPL.N0000': {'XGBoost':0.18,'SARIMAX':13.66,'LightGBM':4.91,  'Hybrid':None},
-    'WATA.N0000': {'XGBoost':0.56,'SARIMAX':14.43,'LightGBM':None,  'Hybrid':15.91},
-    'AGPL.N0000': {'XGBoost':0.30,'SARIMAX':21.80,'LightGBM':10.00, 'Hybrid':None},
-    'HAPU.N0000': {'XGBoost':0.25,'SARIMAX':12.43,'LightGBM':1.58,  'Hybrid':None},
-    'KOTA.N0000': {'XGBoost':0.22,'SARIMAX':7.08, 'LightGBM':1.17,  'Hybrid':None},
-    'BFL.N0000':  {'XGBoost':0.64,'SARIMAX':16.31,'LightGBM':None,  'Hybrid':10.10},
-    'RWSL.N0000': {'XGBoost':1.82,'SARIMAX':29.73,'LightGBM':None,  'Hybrid':31.14},
-    'DIPP.N0000': {'XGBoost':0.24,'SARIMAX':11.48,'LightGBM':5.52,  'Hybrid':None},
-    'MGT.N0000':  {'XGBoost':0.18,'SARIMAX':21.99,'LightGBM':0.64,  'Hybrid':None},
-    'HEXP.N0000': {'XGBoost':0.42,'SARIMAX':16.48,'LightGBM':4.85,  'Hybrid':None},
+    'MCPL.N0000': {'XGBoost':0.18,'SARIMAX':13.66,'LightGBM':4.91, 'Hybrid':None},
+    'WATA.N0000': {'XGBoost':0.56,'SARIMAX':14.43,'LightGBM':None, 'Hybrid':15.91},
+    'AGPL.N0000': {'XGBoost':0.30,'SARIMAX':21.80,'LightGBM':10.00,'Hybrid':None},
+    'HAPU.N0000': {'XGBoost':0.25,'SARIMAX':12.43,'LightGBM':1.58, 'Hybrid':None},
+    'KOTA.N0000': {'XGBoost':0.22,'SARIMAX':7.08, 'LightGBM':1.17, 'Hybrid':None},
+    'BFL.N0000':  {'XGBoost':0.64,'SARIMAX':16.31,'LightGBM':None, 'Hybrid':10.10},
+    'RWSL.N0000': {'XGBoost':1.82,'SARIMAX':29.73,'LightGBM':None, 'Hybrid':31.14},
+    'DIPP.N0000': {'XGBoost':0.24,'SARIMAX':11.48,'LightGBM':5.52, 'Hybrid':None},
+    'MGT.N0000':  {'XGBoost':0.18,'SARIMAX':21.99,'LightGBM':0.64, 'Hybrid':None},
+    'HEXP.N0000': {'XGBoost':0.42,'SARIMAX':16.48,'LightGBM':4.85, 'Hybrid':None},
 }
 
 SPLIT_COMPANIES = {
@@ -1742,20 +1697,23 @@ SPLIT_COMPANIES = {
 }
 
 company_data = {
-    'MCPL.N0000': {'name':'Mahaweli Coconut Plantations PLC','symbol':'MCPL','sector':'Plantations',     'default_price':50.50, 'color':'#0ea5e9'},
-    'WATA.N0000': {'name':'Watawala Plantations PLC',        'symbol':'WATA','sector':'Plantations',     'default_price':180.00,'color':'#10b981'},
-    'AGPL.N0000': {'name':'Agarapatana Plantations PLC',     'symbol':'AGPL','sector':'Plantations',     'default_price':22.00, 'color':'#14b8a6'},
-    'HAPU.N0000': {'name':'Hapugastenne Plantations PLC',    'symbol':'HAPU','sector':'Plantations',     'default_price':74.00, 'color':'#06b6d4'},
-    'KOTA.N0000': {'name':'Kotagala Plantations PLC',        'symbol':'KOTA','sector':'Plantations',     'default_price':9.80,  'color':'#3b82f6'},
-    'BFL.N0000':  {'name':'Bairaha Farms PLC',               'symbol':'BFL', 'sector':'Food & Beverage', 'default_price':300.00,'color':'#6366f1'},
-    'RWSL.N0000': {'name':'Raigam Wayamba Salterns PLC',     'symbol':'RWSL','sector':'Manufacturing',   'default_price':27.50, 'color':'#8b5cf6'},
-    'DIPP.N0000': {'name':'Dipped Products PLC',             'symbol':'DIPP','sector':'Manufacturing',   'default_price':68.00, 'color':'#a855f7'},
-    'MGT.N0000':  {'name':'Hayleys Fabric PLC',              'symbol':'MGT', 'sector':'Plantations',     'default_price':42.50, 'color':'#d946ef'},
-    'HEXP.N0000': {'name':'Hayleys Fibre PLC',               'symbol':'HEXP','sector':'Export & Trading','default_price':95.00, 'color':'#ec4899'},
+    'MCPL.N0000': {'name':'Mahaweli Coconut Plantations PLC','symbol':'MCPL','sector':'Plantations',     'default_price':50.50, 'color':'#3d7fff'},
+    'WATA.N0000': {'name':'Watawala Plantations PLC',        'symbol':'WATA','sector':'Plantations',     'default_price':180.00,'color':'#0fd4a0'},
+    'AGPL.N0000': {'name':'Agarapatana Plantations PLC',     'symbol':'AGPL','sector':'Plantations',     'default_price':22.00, 'color':'#14c8b8'},
+    'HAPU.N0000': {'name':'Hapugastenne Plantations PLC',    'symbol':'HAPU','sector':'Plantations',     'default_price':74.00, 'color':'#06c8e0'},
+    'KOTA.N0000': {'name':'Kotagala Plantations PLC',        'symbol':'KOTA','sector':'Plantations',     'default_price':9.80,  'color':'#5b8fff'},
+    'BFL.N0000':  {'name':'Bairaha Farms PLC',               'symbol':'BFL', 'sector':'Food & Beverage', 'default_price':300.00,'color':'#7c6af5'},
+    'RWSL.N0000': {'name':'Raigam Wayamba Salterns PLC',     'symbol':'RWSL','sector':'Manufacturing',   'default_price':27.50, 'color':'#a060f5'},
+    'DIPP.N0000': {'name':'Dipped Products PLC',             'symbol':'DIPP','sector':'Manufacturing',   'default_price':68.00, 'color':'#be50f0'},
+    'MGT.N0000':  {'name':'Hayleys Fabric PLC',              'symbol':'MGT', 'sector':'Plantations',     'default_price':42.50, 'color':'#e040d8'},
+    'HEXP.N0000': {'name':'Hayleys Fibre PLC',               'symbol':'HEXP','sector':'Export & Trading','default_price':95.00, 'color':'#f05080'},
 }
 
+# Fixed confidence threshold (not exposed in UI)
+CONFIDENCE_THRESHOLD = 0.70
+
 # ===============================
-# MODEL LOADING
+# MODEL LOADING — spinner disappears after load
 # ===============================
 
 @st.cache_resource(show_spinner=False)
@@ -1867,7 +1825,8 @@ def load_all_models():
 
     return models, status
 
-models, model_status = load_all_models()
+with st.spinner(t("පද්ධතිය සූදානම් කරමින්...", "Preparing system components...")):
+    models, model_status = load_all_models()
 
 # ===============================
 # FEATURE ENGINEERING
@@ -1994,15 +1953,15 @@ def predict_best(company,ss,pc,date):
     pred,conf = fn(company,ss,pc,date)
     if pred is not None:
         mape = MODEL_METRICS[company].get(bm)
-        lbl  = f"{bm}" if mape else bm
+        lbl  = f"{bm} (MAPE: {mape:.2f}%)" if mape else bm
         return pred,conf,lbl
     pred,conf = predict_xgboost(company,ss,pc,date)
     if pred is not None:
-        return pred,conf,"Forecasting Engine"
-    return None,0,"Unavailable"
+        return pred,conf,f"XGBoost Fallback (MAPE: {MODEL_METRICS[company]['XGBoost']:.2f}%)"
+    return None,0,"No Model"
 
 # ===============================
-# SENTIMENT
+# SENTIMENT ANALYSIS
 # ===============================
 
 def analyze_sentiment(text, company):
@@ -2021,61 +1980,24 @@ def analyze_sentiment(text, company):
     return "Positive" if p>n else "Negative" if n>p else "Neutral"
 
 # ===============================
-# NAVIGATION BAR
-# ===============================
-
-sl = sum(1 for s in model_status['sentiment'].values() if s.get('loaded'))
-xl = sum(1 for s in model_status['xgboost'].values()   if s.get('loaded'))
-all_ok = (sl + xl) > 0
-
-nav_label_home = t("මුල් පිටුව", "Home")
-nav_label_how  = t("භාවිතා කරන ආකාරය", "How to Use")
-nav_label_about= t("ගැන", "About")
-
-st.markdown(f"""
-<div class="topnav">
-    <div class="nav-brand">
-        <span class="nav-brand-dot"></span>
-        SentiTrade
-    </div>
-    <div class="nav-links" id="navlinks">
-        <span class="nav-link {'active' if st.session_state.nav_page=='home'  else ''}"
-              onclick="void(0)">{nav_label_home}</span>
-        <span class="nav-link {'active' if st.session_state.nav_page=='how'   else ''}"
-              onclick="void(0)">{nav_label_how}</span>
-        <span class="nav-link {'active' if st.session_state.nav_page=='about' else ''}"
-              onclick="void(0)">{nav_label_about}</span>
-    </div>
-    <div class="nav-right">
-        <span class="nav-badge">
-            <span class="dot {'dot-on' if all_ok else 'dot-off'}"></span>
-            {'Ready' if all_ok else 'Loading'}
-        </span>
-        <span class="nav-badge">v1.0.0</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# Streamlit nav buttons (hidden visually but functional via sidebar)
-# Use sidebar for nav
-
-# ===============================
 # SIDEBAR
 # ===============================
 
 with st.sidebar:
     st.markdown("""
-    <div style='padding:1.2rem 0 0.5rem;'>
-        <div style='font-weight:700;font-size:1rem;color:#0f172a;'>SentiTrade</div>
-        <div style='font-size:0.72rem;color:#94a3b8;margin-top:2px;'>
-            Colombo Stock Exchange · v1.0.0
-        </div>
+    <div class="sidebar-brand">
+        <div class="sidebar-label">Colombo Stock Exchange · AI</div>
+        <div class="sidebar-name">SentiTrade</div>
+        <div class="sidebar-ver">v1.0.0</div>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown("---")
 
-    # Language
-    st.markdown(f"<div style='font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;'>{t('භාෂාව','Language')}</div>", unsafe_allow_html=True)
+    st.markdown("<div style='padding: 0 1rem;'>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.9rem;'></div>", unsafe_allow_html=True)
+
+    # Language Toggle
+    st.markdown(f"<div class='sidebar-label' style='padding:0;margin-bottom:6px;'>"
+                f"{t('භාෂාව', 'Language')}</div>", unsafe_allow_html=True)
     la, lb = st.columns(2)
     with la:
         if st.button("සිංහල", use_container_width=True,
@@ -2086,843 +2008,718 @@ with st.sidebar:
                      type="primary" if st.session_state.lang=="en" else "secondary"):
             st.session_state.lang = "en"; st.rerun()
 
-    st.markdown("---")
+    st.markdown("<hr style='border-color:#1e3050;margin:1rem 0;'>", unsafe_allow_html=True)
 
-    # Navigation
-    st.markdown(f"<div style='font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;'>{t('සෙවිය','Navigate')}</div>", unsafe_allow_html=True)
+    # System Readiness
+    st.markdown(f"<div class='sidebar-label' style='padding:0;margin-bottom:8px;'>"
+                f"{t('පද්ධති සූදානම', 'System Readiness')}</div>", unsafe_allow_html=True)
 
-    pages = {
-        "home":  t("මුල් පිටුව — විශ්ලේෂණය", "Home — Run Analysis"),
-        "how":   t("භාවිතා කරන ආකාරය",        "How to Use"),
-        "about": t("SentiTrade ගැන",            "About SentiTrade"),
-    }
-    for pg_key, pg_label in pages.items():
-        if st.button(pg_label, use_container_width=True,
-                     type="primary" if st.session_state.nav_page==pg_key else "secondary",
-                     key=f"nav_{pg_key}"):
-            st.session_state.nav_page = pg_key; st.rerun()
+    sl = sum(1 for s in model_status['sentiment'].values() if s.get('loaded'))
+    xl = sum(1 for s in model_status['xgboost'].values()   if s.get('loaded'))
+    rl = sum(1 for s in model_status['sarimax'].values()   if s.get('loaded'))
+    ll = sum(1 for s in model_status['lightgbm'].values()  if s.get('loaded'))
+    hl = sum(1 for s in model_status['hybrid'].values()    if s.get('loaded'))
 
-    st.markdown("---")
-
-    # System status — plain language
-    st.markdown(f"<div style='font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;'>{t('පද්ධති තත්ත්වය','System Status')}</div>", unsafe_allow_html=True)
-
-    status_items = [
-        (t("ප්‍රවෘත්ති විශ්ලේෂණය","News Analysis"),    sl,  10),
-        (t("මිල පූර්වාවලෝකනය","Price Forecasting"),   xl,  10),
+    labels_map = [
+        (t("ප්‍රවෘත්ති කියවීම",  "News Analysis"),    sl, 10),
+        (t("ප්‍රාථමික ආදර්ශ",    "Primary Forecast"),  xl, 10),
+        (t("කාල-ශ්‍රේණි",        "Time Series"),       rl, 10),
+        (t("ද්විතීය ආදර්ශ",      "Secondary Models"),  ll, 10),
+        (t("ඒකාබද්ධ ආදර්ශ",      "Ensemble"),          hl,  3),
     ]
-    for label, loaded, total in status_items:
-        dc = "dot-on" if loaded > 0 else "dot-off"
-        status_txt = t("සූදානම්","Ready") if loaded > 0 else t("නොමැත","Unavailable")
-        st.markdown(
-            f'<div style="display:flex;justify-content:space-between;align-items:center;'
-            f'padding:4px 0;">'
-            f'<span><span class="dot {dc}"></span>'
-            f'<span style="color:#475569;font-size:0.83rem;">{label}</span></span>'
-            f'<span style="color:#94a3b8;font-size:0.76rem;">{status_txt}</span>'
-            f'</div>', unsafe_allow_html=True)
+    for label, loaded, total in labels_map:
+        dc  = "dot-on" if loaded > 0 else "dot-off"
+        pct = int((loaded / total) * 100)
+        st.markdown(f"""
+        <div style="margin-bottom:7px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                <span><span class="dot {dc}"></span>
+                <span style="color:#7a9dbf;font-size:0.79rem;">{label}</span></span>
+                <span style="color:#3d5570;font-size:0.7rem;font-family:'JetBrains Mono',monospace;">{loaded}/{total}</span>
+            </div>
+            <div style="background:#1e3050;border-radius:2px;height:3px;">
+                <div style="background:#3d7fff;width:{pct}%;height:3px;border-radius:2px;transition:width 0.4s;"></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-    st.markdown("---")
+    st.markdown("<hr style='border-color:#1e3050;margin:1rem 0;'>", unsafe_allow_html=True)
 
-    # Date
-    st.markdown(f"<div style='font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;'>{t('විශ්ලේෂණ දිනය','Analysis Date')}</div>", unsafe_allow_html=True)
+    # Analysis Date
+    st.markdown(f"<div class='sidebar-label' style='padding:0;margin-bottom:6px;'>"
+                f"{t('විශ්ලේෂණ දිනය', 'Analysis Date')}</div>", unsafe_allow_html=True)
     analysis_date = st.date_input("", value=datetime.now(), label_visibility="collapsed")
 
-    st.markdown("---")
+    st.markdown("<hr style='border-color:#1e3050;margin:1rem 0;'>", unsafe_allow_html=True)
+
+    # Coverage
+    st.markdown(f"<div class='sidebar-label' style='padding:0;margin-bottom:8px;'>"
+                f"{t('ආවරණය', 'Coverage')}</div>", unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style="color:#7a9dbf;font-size:0.8rem;line-height:2;">
+        <div>{t('සමාගම් ගණන', 'Companies')}<span style="float:right;color:#dce8f8;font-weight:600;">10</span></div>
+        <div>{t('හුවමාරුව', 'Exchange')}<span style="float:right;color:#dce8f8;font-weight:600;">CSE</span></div>
+        <div>{t('ප්‍රවෘත්ති', 'News')}<span style="float:right;color:#dce8f8;font-weight:600;">{t('සිංහල', 'Sinhala')}</span></div>
+        <div>{t('WATA, BFL', 'WATA, BFL')}<span style="float:right;color:#f0b429;font-weight:600;font-size:0.7rem;">1:5 {t('බෙදීම', 'Split')}</span></div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<hr style='border-color:#1e3050;margin:1rem 0;'>", unsafe_allow_html=True)
+
+    # Author
     st.markdown("""
-    <div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:0.9rem;'>
-        <div style='font-weight:600;color:#0f172a;font-size:0.85rem;'>Huzaifa Ameer</div>
-        <div style='color:#94a3b8;font-size:0.74rem;margin:2px 0 6px;'>AI/ML Engineer</div>
-        <a href='https://www.linkedin.com/in/huzaifaameer/' target='_blank'
-           style='color:#1d4ed8;font-size:0.74rem;text-decoration:none;font-weight:600;'>
+    <div style="background:#111d2e;border:1px solid #1e3050;border-radius:10px;padding:0.85rem 1rem;">
+        <div style="font-weight:700;color:#dce8f8;font-size:0.84rem;">Huzaifa Ameer</div>
+        <div style="color:#3d5570;font-size:0.71rem;margin:2px 0 5px;">AI / ML Engineer</div>
+        <a href="https://www.linkedin.com/in/huzaifaameer/" target="_blank"
+           style="color:#93bbff;font-size:0.74rem;text-decoration:none;font-weight:600;">
            LinkedIn Profile
         </a>
     </div>
     """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ===============================
-# PAGE: HOW TO USE
+# MAIN CONTENT
 # ===============================
 
-if st.session_state.nav_page == "how":
-    st.markdown('<div class="page-wrap">', unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div style='margin-bottom:2rem;'>
-        <div style='font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-                    color:#94a3b8;margin-bottom:0.6rem;'>
-            {t('මාර්ගෝපදේශය','User Guide')}
-        </div>
-        <h2 style='font-size:2rem;font-weight:700;color:#0f172a;margin:0 0 0.6rem;letter-spacing:-0.5px;'>
-            {t('SentiTrade භාවිතා කරන ආකාරය','How to Use SentiTrade')}
-        </h2>
-        <p style='color:#475569;font-size:0.96rem;max-width:640px;line-height:1.75;margin:0;'>
-            {t(
-                'ඔබ කොටස් ගැන ස්වාභාවිකව දැනුවත් නොවූ කෙනෙකු වුවත් SentiTrade ඉතා පහසුවෙන් භාවිතා කළ හැකිය.',
-                'Even if you have no background in stocks or technology, SentiTrade is designed to be simple and clear.'
-            )}
-        </p>
+# ── HERO ─────────────────────────────────────────────────────────────────────
+st.markdown(f"""
+<div class="hero">
+    <div class="hero-version">v1.0.0</div>
+    <div class="hero-eyebrow">CSE · Colombo Stock Exchange · AI-Powered Forecasting</div>
+    <h1 class="hero-title">
+        <span class="accent">{t('සිංහල', 'Sinhala')}</span> SentiTrade
+    </h1>
+    <p class="hero-sub">
+        {t(
+            'සිංහල ව්‍යාපාරික ප්‍රවෘත්ති කියවා, ඒවායේ අදහස AI ආදර්ශ සමඟ ඒකාබද්ධ කර, '
+            'කොළඹ කොටස් හුවමාරුවේ සමාගම් 10ක ඊළඟ ව්‍යාපාරික දිනයේ කොටස් මිල පිළිබඳ '
+            'අනාවැකිය ලබා දෙයි.',
+            'Reads Sinhala business news, interprets its meaning with AI, '
+            'and forecasts next trading day stock prices for 10 CSE-listed companies.'
+        )}
+    </p>
+    <div class="hero-tags">
+        <span class="hero-tag">{t('සිංහල ප්‍රවෘත්ති', 'Sinhala News')}</span>
+        <span class="hero-tag">Colombo Stock Exchange</span>
+        <span class="hero-tag">{t('AI මිල අනාවැකිය', 'AI Price Forecast')}</span>
+        <span class="hero-tag">{t('සමාගම් 10', '10 Companies')}</span>
     </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
-    if st.session_state.lang == "si":
-        steps = [
-            ("1", "සිංහල ව්‍යාපාරික පුවත් ලිපිය ඇතුළු කරන්න",
-             "ඔබ කියවූ ඕනෑම සිංහල ව්‍යාපාරික පුවතක් 'ලිපිය 1' කොටුවට අලවන්න. "
-             "ලිපි කිහිපයක් ඇතුළු කිරීමෙන් ප්‍රතිඵල වඩාත් නිවැරදි වේ. "
-             "සිංහල භාෂාවෙන් ලිවූ ව්‍යාපාරික ලිපි පමණක් ඇතුළු කරන්න."),
-            ("2", "ඊයේ වසා දැමූ කොටස් මිල ඇතුළු කරන්න",
-             "සෑම සමාගමකටම ඊයේ දිනයේ කොළඹ කොටස් හුවමාරුවේ (CSE) වසා දැමූ කොටස් මිල රුපියල් ඒකකයෙන් ඇතුළු කරන්න. "
-             "ඔබ මෙය නොදනී නම්, CSE.lk වෙබ් අඩවියෙන් හෝ ඔබේ stockbroker ගෙන් ලබා ගත හැකිය."),
-            ("3", "දිනය තෝරාගන්න",
-             "Sidebar (වම් පැත්ත) හි ඇති 'Analysis Date' (විශ්ලේෂණ දිනය) තේරීම ගෙන් ඔබට අදාළ දිනය තෝරාගන්න. "
-             "සාමාන්‍යයෙන් අද දිනය හෝ ඊළඟ ව්‍යාපාරික දිනය භාවිතා කරන්න."),
-            ("4", "විශ්ලේෂණය ක්‍රියාත්මක කරන්න",
-             "'Run Analysis' බොත්තම ඔබන්න. SentiTrade ඔබ ඇතුළු කළ ලිපිවල ධනාත්මක හෝ ඍණාත්මක ව්‍යාපාරික ස්වභාවය "
-             "හඳුනාගෙන, ඉදිරි කොටස් මිල ගණනය කරයි."),
-            ("5", "ප්‍රතිඵල කියවන්න",
-             "ප්‍රතිඵල පිටුවේ, සෑම සමාගමකටම ඊළඟ ව්‍යාපාරික දිනයේ අපේක්ෂිත මිල, ඊයේ මිලට සාපේක්ෂව වෙනස (+ හෝ −), "
-             "සහ ප්‍රවෘත්තිවලින් ගත් ව්‍යාපාරික ස්වභාවය (ධනාත්මක/ඍණාත්මක/මධ්‍යස්ථ) දැකිය හැකිය."),
-            ("6", "ප්‍රතිඵල බාගත කරන්න",
-             "ඔබට අවශ්‍ය නම් 'Export' කොටසෙන් ප්‍රතිඵල CSV ගොනුවක් ලෙස සුරකිය හැකිය. "
-             "ඔබේ broker සහ reference සඳහා ඉතා ප්‍රයෝජනවත් වේ."),
-        ]
-    else:
-        steps = [
-            ("1", "Paste your Sinhala business news article",
-             "Copy and paste any Sinhala-language business news article into the 'Article 1' box. "
-             "Adding more articles improves the accuracy of the forecast. "
-             "Make sure the text is written in Sinhala — English articles won't be analysed correctly."),
-            ("2", "Enter yesterday's closing stock price",
-             "For each company, enter the price at which its shares closed on the Colombo Stock Exchange (CSE) yesterday. "
-             "You can find these prices on CSE.lk, your stockbroker's app, or a financial news site."),
-            ("3", "Select the analysis date",
-             "Use the 'Analysis Date' picker in the left sidebar to choose the date you want to forecast for. "
-             "Typically this is today or the next trading day."),
-            ("4", "Run the analysis",
-             "Click 'Run Analysis'. SentiTrade will read your news articles, determine whether the business sentiment is "
-             "positive, negative, or neutral, and calculate an expected price for each company."),
-            ("5", "Read your results",
-             "In the results section, you'll see each company's expected price for the next trading day, "
-             "the change compared to yesterday (+ or −), and the news sentiment (Positive / Negative / Neutral) "
-             "that influenced the forecast."),
-            ("6", "Download your report",
-             "Use the Export section at the bottom of the results to download a CSV file of all predictions "
-             "and sentiment scores — useful for sharing with your stockbroker or keeping records."),
-        ]
-
-    for num, title, desc in steps:
-        st.markdown(f"""
+# ── HOW IT WORKS ──────────────────────────────────────────────────────────────
+st.markdown(f"""
+<div class="how-card">
+    <h3>{t('මෙය ක්‍රියා කරන ආකාරය', 'How It Works')}</h3>
+    <div class="how-steps">
         <div class="how-step">
-            <div class="step-num">{num}</div>
-            <div>
-                <div class="step-title">{title}</div>
-                <p class="step-desc">{desc}</p>
+            <div class="how-step-num">1</div>
+            <h4>{t('ප්‍රවෘත්ති ඇතුළත් කරන්න', 'Paste the News')}</h4>
+            <p>{t(
+                'සිංහල ව්‍යාපාරික ප්‍රවෘත්ති ලිපි ඇලවන්න. ඕනෑ තරම් ලිපි ඇතුළත් කළ හැකිය.',
+                'Copy and paste Sinhala business news articles. You can add as many as you like for better accuracy.'
+            )}</p>
+        </div>
+        <div class="how-step">
+            <div class="how-step-num">2</div>
+            <h4>{t('ඊයේ මිල ඇතුළත් කරන්න', "Enter Yesterday's Price")}</h4>
+            <p>{t(
+                'කොළඹ කොටස් හුවමාරුව ඊයේ රාත්‍රී 4:30ට වසා දැමූ විට සෑම සමාගමකම කොටස් මිල ඇතුළත් කරන්න.',
+                "Enter each company's closing price from yesterday's 4:30 PM CSE session in Sri Lankan Rupees."
+            )}</p>
+        </div>
+        <div class="how-step">
+            <div class="how-step-num">3</div>
+            <h4>{t('AI ප්‍රවෘත්ති විශ්ලේෂණය', 'AI Reads the News')}</h4>
+            <p>{t(
+                'AI ආදර්ශය ප්‍රවෘත්තිවල ධනාත්මක හෝ ඍණාත්මක බව හඳුනාගෙන, කොටස් මිලට බලපෑ හැකි ආකාරය ගණනය කරයි.',
+                'The AI identifies positive or negative signals in the news, then calculates how each company may be affected.'
+            )}</p>
+        </div>
+        <div class="how-step">
+            <div class="how-step-num">4</div>
+            <h4>{t('අනාවැකිය ලබා ගන්න', 'Get the Forecast')}</h4>
+            <p>{t(
+                'ඊළඟ ව්‍යාපාරික දිනයේ ඉලක්ක මිල, අපේක්ෂිත වෙනස, සහ නිර්දේශ ස්වයංක්‍රීයව ලබා ගන්න.',
+                'Receive a projected price, expected change percentage, and buy/watch recommendations for the next trading day.'
+            )}</p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# ── INSTRUCTIONS ─────────────────────────────────────────────────────────────
+with st.expander(
+    t("සම්පූර්ණ භාවිතා උපදෙස් (සිංහල / English)", "Full Usage Instructions (Sinhala / English)"),
+    expanded=False
+):
+    col_si, col_en = st.columns(2)
+    with col_si:
+        st.markdown("""
+        <div class="instr-panel">
+            <h3>SentiTrade භාවිතා කරන ආකාරය</h3>
+            <div class="instr-row">
+                <div class="instr-num">1</div>
+                <div class="instr-text">
+                    <strong>සිංහල ව්‍යාපාරික ප්‍රවෘත්ති</strong> — ව්‍යාපාරික, ආර්ථික, හෝ කොටස් වෙළඳාම් ගැන ලිපි <strong>සිංහල භාෂාවෙන් පමණක්</strong> ඇතුළත් කරන්න. "ලිපිය එකතු කරන්න" ඔබා ලිපි කිහිපයක් එකතු කළ හැකිය.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">2</div>
+                <div class="instr-text">
+                    <strong>ඊයේ වසා දැමූ මිල</strong> — "කොටස් මිල" ටැබ් ගොස් ඊයේ රාත්‍රී 4:30 වනවිට CSE හි සෑම සමාගමකම <strong>අවසාන ගනුදෙනු මිල</strong> රුපියල් ඒකකයෙන් ඇතුළත් කරන්න.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">3</div>
+                <div class="instr-text">
+                    <strong>Sidebar දිනය</strong> — Sidebar එකෙහි "විශ්ලේෂණ දිනය" ලෙස <strong>ඊළඟ ව්‍යාපාරික දිනය</strong> (සෙනසුරාදා / ඉරිදා / රජයේ නිවාඩු නොවූ දිනයක්) තෝරන්න.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">4</div>
+                <div class="instr-text">
+                    <strong>විශ්ලේෂණය ක්‍රියාත්මක කරන්න</strong> — "විශ්ලේෂණය ආරම්භ කරන්න" ඔබන්න. ප්‍රතිඵල, ප්‍රස්ථාර, සහ නිර්දේශ ස්වයංක්‍රීයව දිස් වේ.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">5</div>
+                <div class="instr-text">
+                    <strong>ප්‍රතිඵල බාගත කරන්න</strong> — පිටුව යට ඇති "Export" බොත්තම් ඔබා CSV ආකෘතියෙන් සම්පූර්ණ වාර්තාව බාගත කළ හැකිය.
+                </div>
+            </div>
+            <div class="instr-row" style="border:none;">
+                <div class="instr-num" style="background:rgba(240,180,41,0.15);border-color:rgba(240,180,41,0.3);color:#f0b429;">!</div>
+                <div class="instr-text" style="color:#f0b429;">
+                    <strong>වැදගත්:</strong> WATA (Watawala Plantations) සහ BFL (Bairaha Farms) සඳහා ඇතුළු කරන ලද මිල, කොටස් බෙදීම (1:5) සඳහා ස්වයංක්‍රීයව ගළපා නිවැරදි අනාවැකිය ලබා දෙනු ඇත.
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with col_en:
+        st.markdown("""
+        <div class="instr-panel">
+            <h3>How to Use SentiTrade</h3>
+            <div class="instr-row">
+                <div class="instr-num">1</div>
+                <div class="instr-text">
+                    <strong>Add Sinhala News Articles</strong> — Paste business, economic, or stock market news <strong>written in Sinhala only</strong>. Click "Add Article" to include multiple articles — more articles improve accuracy.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">2</div>
+                <div class="instr-text">
+                    <strong>Enter Yesterday's Closing Price</strong> — Go to the "Stock Prices" tab. Enter each company's <strong>closing price (4:30 PM)</strong> from yesterday's CSE session in Sri Lankan Rupees (Rs.).
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">3</div>
+                <div class="instr-text">
+                    <strong>Set the Analysis Date</strong> — In the sidebar, select the <strong>next trading day</strong> (weekday, excluding public holidays) as the Analysis Date.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">4</div>
+                <div class="instr-text">
+                    <strong>Run the Analysis</strong> — Click "Run Analysis". Results, charts, and recommendations appear automatically below.
+                </div>
+            </div>
+            <div class="instr-row">
+                <div class="instr-num">5</div>
+                <div class="instr-text">
+                    <strong>Download Results</strong> — Use the Export buttons at the bottom to download the full prediction report in CSV format.
+                </div>
+            </div>
+            <div class="instr-row" style="border:none;">
+                <div class="instr-num" style="background:rgba(240,180,41,0.15);border-color:rgba(240,180,41,0.3);color:#f0b429;">!</div>
+                <div class="instr-text" style="color:#f0b429;">
+                    <strong>Note:</strong> For WATA (Watawala Plantations) and BFL (Bairaha Farms), the price you enter will be automatically adjusted for their 1:5 stock split to produce an accurate forecast.
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
+# ── INPUT TABS ────────────────────────────────────────────────────────────────
+st.markdown(f'<div class="sec-hdr"><span>01</span> {t("දත්ත ඇතුළත් කිරීම", "Data Input")}</div>',
+            unsafe_allow_html=True)
+
+tab1, tab2 = st.tabs([
+    t("සිංහල ප්‍රවෘත්ති ලිපි", "Sinhala News Articles"),
+    t("කොටස් මිල", "Stock Prices"),
+])
+
+with tab1:
     st.markdown(f"""
-    <div class="warn-box" style='margin-top:2rem;'>
-        <strong>{t('වැදගත් සටහන','Important Note')} —</strong>
+    <div class='info-box'>
+        <strong>{t('උපදෙස', 'Tip')}:</strong>&nbsp;
         {t(
-            'SentiTrade ප්‍රවෘත්ති-ආශ්‍රිත සිදුවිය හැකි දිශාවක් (direction) සලකා බැලේ. '
-            'මෙය ආයෝජන උපදෙසක් නොවේ. ඕනෑම ආයෝජන තීරණයක් ගැනීමට පෙර ලිදෙනු ලබා ශ්‍රේණිගත broker හෝ '
-            'මූල්‍ය උපදේශකයකු හමුවන්න.',
-            'SentiTrade estimates a likely direction based on news sentiment — it is not a guarantee of future prices. '
-            'Always consult a licensed stockbroker or financial adviser before making investment decisions.'
+            'සිංහල ව්‍යාපාරික ප්‍රවෘත්ති ලිපි පමණක් ඇතුළත් කරන්න. '
+            'ලිපි ගණන වැඩිවන තරමට විශ්ලේෂණය නිවැරදිය.',
+            'Sinhala business news articles only. More articles improve prediction reliability.'
         )}
     </div>
     """, unsafe_allow_html=True)
 
-    # FAQ
+    if "news_inputs" not in st.session_state:
+        st.session_state.news_inputs = [""]
+
+    _, cb, cc = st.columns([3,1,1])
+    with cb:
+        if st.button(t("ලිපිය එකතු කරන්න", "Add Article"), use_container_width=True):
+            st.session_state.news_inputs.append(""); st.rerun()
+    with cc:
+        if st.button(t("සියල්ල මකන්න", "Clear All"), use_container_width=True):
+            st.session_state.news_inputs = [""]; st.rerun()
+
+    news_texts = []
+    for i in range(len(st.session_state.news_inputs)):
+        news = st.text_area(
+            f"{t('ලිපිය', 'Article')} {i+1}",
+            height=130,
+            value=st.session_state.news_inputs[i],
+            key=f"news_{i}",
+            placeholder=t(
+                "සිංහල ව්‍යාපාරික ප්‍රවෘත්ති ලිපිය මෙහි අලවන්න...",
+                "Paste your Sinhala business news article here..."
+            )
+        )
+        news_texts.append(news)
+        st.session_state.news_inputs[i] = news
+
+with tab2:
     st.markdown(f"""
-    <div style='margin-top:2.5rem;'>
-        <div style='font-weight:700;font-size:1rem;color:#0f172a;margin-bottom:1rem;'>
-            {t('නිතර අසන ප්‍රශ්න','Frequently Asked Questions')}
-        </div>
+    <div class='info-box'>
+        <strong>{t('සටහන', 'Note')}:</strong>&nbsp;
+        {t(
+            'ඊයේ රාත්‍රී 4:30 CSE වසා දැමූ මිල රුපියල් (Rs.) ඒකකයෙන් ඇතුළත් කරන්න. '
+            'WATA සහ BFL — කොටස් බෙදීම (1:5) ස්වයංක්‍රීයව ගළපා ඇත.',
+            "Enter yesterday's 4:30 PM CSE closing prices in Rupees (Rs.). "
+            'WATA and BFL prices are automatically adjusted for their 1:5 stock split.'
+        )}
     </div>
     """, unsafe_allow_html=True)
 
-    if st.session_state.lang == "si":
-        faqs = [
-            ("සිංහල ලිපි ඇතුළු නොකළොත් කුමක් සිදු වේද?",
-             "ඇල්ගොරිතමය ලිපිවල ස්වභාවය හඳුනාගත නොහැකි බැවින් ප්‍රතිඵල නිවැරදි නොවිය හැකිය. "
-             "හැකිතාක් සිංහල ව්‍යාපාරික ලිපිම ඇතුළු කරන්න."),
-            ("WATA සහ BFL කොටස් 'split adjusted' ලෙස සලකනු ලබන්නේ ඇයි?",
-             "WATA 2025 සහ BFL 2023 දී 1:5 කොටස් බෙදීම (stock split) සිදු කළේය. "
-             "ඒ නිසා, ඔබ ඇතුළු කරන මිල split-adjusted (බෙදීමෙන් පසු) මිල විය යුතුය. "
-             "ගණනය කරන ලද අනාවැකි ද split-adjusted මිල ලෙස ප්‍රදර්ශනය වේ."),
-            ("ලිපි කීයක් ඇතුළු කළ හොත් හොඳ ද?",
-             "ලිපි 3-5 ක් ඇතුළු කිරීමෙන් ප්‍රතිඵල ස්ථාවර සහ නිවැරදි ලෙස ලැබේ."),
-        ]
-    else:
-        faqs = [
-            ("What happens if I enter English news instead of Sinhala?",
-             "The sentiment engine was trained on Sinhala business language, so English text will not be analysed correctly. "
-             "For best results, always use Sinhala-language articles."),
-            ("Why are WATA and BFL marked 'split-adjusted'?",
-             "Watawala Plantations (WATA) underwent a 1-for-5 stock split in March 2025, and Bairaha Farms (BFL) in August 2023. "
-             "The prices you enter and the predictions shown are already adjusted for these splits, so they reflect the current share price level."),
-            ("How many articles should I add for best results?",
-             "Three to five articles from recent Sinhala business news gives a well-rounded sentiment signal and more stable forecasts."),
-        ]
-
-    for q, a in faqs:
-        with st.expander(q):
-            st.markdown(f"<p style='color:#475569;font-size:0.88rem;line-height:1.75;margin:0;'>{a}</p>", unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ===============================
-# PAGE: ABOUT
-# ===============================
-
-elif st.session_state.nav_page == "about":
-    st.markdown('<div class="page-wrap">', unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div style='margin-bottom:2rem;'>
-        <div style='font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
-                    color:#94a3b8;margin-bottom:0.6rem;'>About</div>
-        <h2 style='font-size:2rem;font-weight:700;color:#0f172a;margin:0 0 0.6rem;letter-spacing:-0.5px;'>
-            {t('SentiTrade ගැන','About SentiTrade')}
-        </h2>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f"""
-    <div class='card card-accent' style='margin-bottom:1.25rem;'>
-        <div style='font-weight:700;color:#0f172a;font-size:0.97rem;margin-bottom:0.6rem;'>
-            {t('SentiTrade යනු කුමක් ද?','What is SentiTrade?')}
-        </div>
-        <p style='color:#475569;font-size:0.9rem;line-height:1.8;margin:0;'>
-            {t(
-                'SentiTrade යනු සිංහල ව්‍යාපාරික ප්‍රවෘත්ති කියවා, ඒවා ධනාත්මක ද ඍණාත්මක ද යන්න '
-                'තේරුම් ගෙන, ඒ අනුව කොළඹ කොටස් හුවමාරුවේ ලැයිස්තුගත සමාගම් 10ක ඊළඟ ව්‍යාපාරික දිනයේ '
-                'කොටස් මිල ගණනය කරන AI-ශක්තිමත් යෙදවුමකි. සරලව කිවහොත්, ව්‍යාපාරික ප්‍රවෘත්ති '
-                'සහ ඊයේ කොටස් මිල ඇතුළු කළ විට, SentiTrade හෙට කොටස් මිල කොතැනට යයිද යන්න '
-                'ඇස්තමේන්තු කරයි.',
-                'SentiTrade is an AI-powered application that reads Sinhala business news, '
-                'determines whether the tone is positive or negative, and uses that information '
-                'alongside yesterday\'s prices to estimate where stock prices for 10 CSE-listed '
-                'companies may move on the next trading day. In plain terms: give it news and '
-                'a price, and it gives you a direction.'
-            )}
-        </p>
-    </div>
-
-    <div class='card' style='margin-bottom:1.25rem;'>
-        <div style='font-weight:700;color:#0f172a;font-size:0.97rem;margin-bottom:0.6rem;'>
-            {t('ආවරණය කරන සමාගම්','Companies Covered')}
-        </div>
-        <p style='color:#475569;font-size:0.88rem;line-height:1.8;margin:0 0 0.8rem;'>
-            {t(
-                'SentiTrade කොළඹ කොටස් හුවමාරුවේ ලැයිස්තුගත සමාගම් 10ක් ආවරණය කරයි:',
-                'SentiTrade covers the following 10 CSE-listed companies:'
-            )}
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    rows = []
+    prev_close_prices = {}
+    sectors = {}
     for c in companies:
-        sp = SPLIT_COMPANIES.get(c)
-        rows.append({
-            t("සිරස","Symbol"): company_data[c]['symbol'],
-            t("සමාගම","Company"): company_data[c]['name'],
-            t("අංශය","Sector"): company_data[c]['sector'],
-            t("කොටස් බෙදීම","Split"): f"1:5 ({sp['date']})" if sp else "—",
-        })
-    st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+        sectors.setdefault(company_data[c]['sector'], []).append(c)
 
+    for sector, sector_cos in sectors.items():
+        with st.expander(f"{sector}", expanded=True):
+            cols = st.columns(min(3, len(sector_cos)))
+            for idx, c in enumerate(sector_cos):
+                with cols[idx % 3]:
+                    info = company_data[c]
+                    if c in SPLIT_COMPANIES:
+                        st.markdown(
+                            f"**{info['symbol']}** "
+                            f"<span style='background:rgba(240,180,41,0.1);color:#f0b429;"
+                            f"font-size:0.64rem;padding:1px 6px;border-radius:4px;"
+                            f"border:1px solid rgba(240,180,41,0.24);font-weight:700;'>"
+                            f"1:5 {t('බෙදීම', 'Split')}</span>",
+                            unsafe_allow_html=True
+                        )
+                    else:
+                        st.markdown(f"**{info['symbol']}**")
+                    st.caption(info['name'][:30] + ("..." if len(info['name']) > 30 else ""))
+                    prev_close_prices[c] = st.number_input(
+                        t("මිල (රු.)", "Price (Rs.)"),
+                        min_value=0.0, value=info['default_price'],
+                        step=0.1, format="%.2f", key=f"price_{c}"
+                    )
+
+# ── ANALYSE BUTTON ────────────────────────────────────────────────────────────
+st.markdown("<div style='height:0.5rem;'></div>", unsafe_allow_html=True)
+_, btn_col, _ = st.columns([1,2,1])
+with btn_col:
+    analyze_button = st.button(
+        t("විශ්ලේෂණය ආරම්භ කරන්න", "Run Analysis"),
+        type="primary", use_container_width=True
+    )
+
+# ===============================
+# ANALYSIS EXECUTION
+# ===============================
+
+if analyze_button:
+    if all(tx.strip() == "" for tx in news_texts):
+        st.warning(t(
+            "අවම වශයෙන් එක් සිංහල ප්‍රවෘත්ති ලිපියක් ඇතුළත් කරන්න.",
+            "Please enter at least one Sinhala news article before running the analysis."
+        ))
+        st.stop()
+
+    pb = st.progress(0)
+    st_txt = st.empty()
+
+    # Sentiment
+    st_txt.text(t("ප්‍රවෘත්තිවල අදහස් විශ්ලේෂණය කරමින්...", "Analysing news articles..."))
+    sent_res = []
+    for idx, text in enumerate(news_texts, 1):
+        if text.strip() == "": continue
+        row = {
+            t("ලිපිය", "Article"): f"{t('ලිපිය', 'Article')} {idx}",
+            t("පෙරදසුන", "Preview"): text[:100] + "..."
+        }
+        for c in companies: row[c] = analyze_sentiment(text, c)
+        sent_res.append(row)
+        pb.progress(int((idx / len(news_texts)) * 40))
+
+    sentiment_df = pd.DataFrame(sent_res)
+    smap = {"Positive": 1, "Neutral": 0, "Negative": -1}
+    score_mx = sentiment_df[[c for c in companies if c in sentiment_df.columns]].copy()
+    for c in companies:
+        if c in score_mx.columns: score_mx[c] = score_mx[c].map(smap)
+    daily_scores = score_mx.mean().reset_index()
+    daily_scores.columns = ["Company", "Average_Sentiment_Score"]
+
+    # Price Predictions
+    st_txt.text(t("මිල අනාවැකිය ගණනය කරමින්...", "Generating price forecasts..."))
+    preds_list, failed = [], []
+
+    for idx, (_, row_d) in enumerate(daily_scores.iterrows()):
+        company = row_d["Company"]
+        ss = row_d["Average_Sentiment_Score"]
+        pc = prev_close_prices.get(company, company_data[company]['default_price'])
+        pred_price, conf, model_used = predict_best(company, ss, pc, analysis_date)
+
+        if pred_price is None:
+            failed.append(company_data[company]['symbol']); continue
+
+        is_split   = company in SPLIT_COMPANIES
+        chg_amt    = pred_price - pc
+        chg_pct    = (chg_amt / pc) * 100
+        bm         = BEST_MODELS[company]
+        bm_mape    = MODEL_METRICS[company].get(bm) or 0
+
+        # For split companies, display adjusted note
+        split_note = ""
+        if is_split:
+            ratio = SPLIT_COMPANIES[company]['ratio']
+            split_note = f" (÷{ratio} {t('ගළපා ඇත', 'adj')})"
+
+        preds_list.append({
+            "Company":              company_data[company]['name'],
+            "Symbol":               company_data[company]['symbol'],
+            "Sector":               company_data[company]['sector'],
+            "Previous_Close":       pc,
+            "Predicted_Price":      pred_price,
+            "Split_Display_Note":   split_note,
+            "Price_Change":         chg_amt,
+            "Price_Change_Percent": chg_pct,
+            "Sentiment_Score":      ss,
+            "Sentiment_Category":   "Positive" if ss > 0.1 else "Negative" if ss < -0.1 else "Neutral",
+            "Model_Used":           model_used,
+            "Best_MAPE":            f"{bm_mape:.2f}%" if bm_mape else "N/A",
+            "Confidence":           conf,
+            "Split_Adjusted":       is_split,
+            "Color":                company_data[company]['color']
+        })
+        pb.progress(40 + int(((idx + 1) / len(companies)) * 60))
+
+    pb.empty(); st_txt.empty()
+
+    if failed:
+        st.warning(f"{t('අනාවැකිය ලැබුණේ නැත', 'Forecast unavailable')}: {', '.join(failed)}")
+    if not preds_list:
+        st.error(t("අනාවැකිය ජනනය කළ නොහැකිය.", "Could not generate any forecasts.")); st.stop()
+
+    predictions_df = pd.DataFrame(preds_list)
+
+    # ── Summary Metrics ───────────────────────────────────────────────────────
+    st.markdown(f'<div class="sec-hdr"><span>02</span> {t("විශ්ලේෂණ ප්‍රතිඵල", "Analysis Results")}</div>',
+                unsafe_allow_html=True)
+
+    c1, c2, c3, c4 = st.columns(4)
+    avg_ret = predictions_df['Price_Change_Percent'].mean()
+    pos_n   = len(predictions_df[predictions_df['Price_Change_Percent'] > 0])
+    avg_snt = predictions_df['Sentiment_Score'].mean()
+    bstp    = predictions_df.loc[predictions_df['Price_Change_Percent'].idxmax()]
+    c1.metric(t("සාමාන්‍ය අනාවැකි වෙනස",  "Avg Forecast Change"),  f"{avg_ret:+.2f}%")
+    c2.metric(t("ඉහළ යන ඉලක්ක",            "Expected Gainers"),     f"{pos_n} / {len(preds_list)}")
+    c3.metric(t("ප්‍රවෘත්ති ස්වරය",          "News Tone"),
+              t("ධනාත්මක", "Positive") if avg_snt > 0.1 else
+              t("ඍණාත්මක", "Negative") if avg_snt < -0.1 else
+              t("මධ්‍යස්ථ", "Neutral"),
+              delta=f"{avg_snt:+.3f}")
+    c4.metric(t("ඉහළම ඉලක්කය", "Top Forecast"), bstp['Symbol'],
+              delta=f"+{bstp['Price_Change_Percent']:.1f}%")
+
+    # ── Sentiment Table ────────────────────────────────────────────────────────
+    st.markdown(f'<div class="sec-hdr"><span>03</span> {t("ප්‍රවෘත්ති ස්වර විශ්ලේෂණය", "News Sentiment Analysis")}</div>',
+                unsafe_allow_html=True)
+    st.caption(t(
+        "සෑම ලිපියකම සෑම සමාගමකට ඇති ස්වරය (ධනාත්මක / මධ්‍යස්ථ / ඍණාත්මක)",
+        "Sentiment per article per company (Positive / Neutral / Negative)"
+    ))
+
+    ad = sentiment_df.copy()
+    rd = {c: company_data[c]['symbol'] for c in companies if c in ad.columns}
+    ad = ad.rename(columns=rd)
+
+    def _sty(val):
+        if val == "Positive": return 'background-color:rgba(15,212,160,0.12);color:#0fd4a0;font-weight:600;'
+        if val == "Negative": return 'background-color:rgba(240,79,99,0.12);color:#f04f63;font-weight:600;'
+        if val == "Neutral":  return 'background-color:rgba(100,116,139,0.1);color:#7a9dbf;'
+        return ''
+
+    sym_cols = [company_data[c]['symbol'] for c in companies if company_data[c]['symbol'] in ad.columns]
+    st.dataframe(ad.style.map(_sty, subset=sym_cols), use_container_width=True, height=340)
+
+    # ── Price Forecasts Table ─────────────────────────────────────────────────
+    st.markdown(f'<div class="sec-hdr"><span>04</span> {t("මිල අනාවැකිය", "Price Forecasts")}</div>',
+                unsafe_allow_html=True)
+    st.caption(t(
+        "WATA (Watawala) සහ BFL (Bairaha Farms) — මිල කොටස් බෙදීම (1:5) සඳහා ස්වයංක්‍රීයව ගළපා ඇත.",
+        "WATA (Watawala) and BFL (Bairaha Farms) — prices automatically adjusted for 1:5 stock split."
+    ))
+
+    disp = predictions_df.copy()
+    disp['Previous_Close']       = disp['Previous_Close'].map(lambda x: f"Rs. {x:,.2f}")
+    # Show split note alongside predicted price for WATA and BFL
+    disp['Predicted_Price']      = disp.apply(
+        lambda r: f"Rs. {r['Predicted_Price']:,.2f}{r['Split_Display_Note']}", axis=1
+    )
+    disp['Price_Change']         = disp['Price_Change'].map(lambda x: f"{x:+,.2f}")
+    disp['Price_Change_Percent'] = disp['Price_Change_Percent'].map(lambda x: f"{x:+.2f}%")
+    disp['Sentiment_Score']      = disp['Sentiment_Score'].map(lambda x: f"{x:.3f}")
+    disp['Confidence']           = disp['Confidence'].map(lambda x: f"{x:.1%}")
+    disp['Split']                = disp['Split_Adjusted'].map(lambda x: "Yes" if x else "—")
+
+    col_rename = {
+        'Symbol':               t('සිරස',       'Symbol'),
+        'Sector':               t('අංශය',        'Sector'),
+        'Previous_Close':       t('ඊයේ මිල',     'Prev Close'),
+        'Predicted_Price':      t('ඉලක්ක මිල',   'Forecast'),
+        'Price_Change_Percent': t('වෙනස',         'Change'),
+        'Sentiment_Category':   t('ස්වරය',        'Sentiment'),
+        'Best_MAPE':            t('නිරවද්‍යතාව', 'Accuracy'),
+        'Confidence':           t('විශ්වාසය',     'Confidence'),
+        'Split':                t('බෙදීම',        'Split Adj'),
+    }
+    st.dataframe(
+        disp[list(col_rename.keys())].rename(columns=col_rename),
+        use_container_width=True, height=390
+    )
+
+    # ── Charts ────────────────────────────────────────────────────────────────
+    st.markdown(f'<div class="sec-hdr"><span>05</span> {t("ප්‍රස්ථාර", "Charts")}</div>',
+                unsafe_allow_html=True)
+
+    vt1, vt2, vt3 = st.tabs([
+        t("මිල වෙනස",    "Price Changes"),
+        t("ස්වර විශ්ලේෂණය", "Sentiment"),
+        t("ව්‍යාපාර අංශ", "Sectors"),
+    ])
+    _bg = dict(
+        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
+        font=dict(color='#7a9dbf', family='Sora, sans-serif'),
+        margin=dict(l=10, r=10, t=42, b=10)
+    )
+
+    with vt1:
+        v1, v2 = st.columns(2)
+        with v1:
+            sdf = predictions_df.sort_values('Price_Change_Percent', ascending=True)
+            fig = go.Figure(go.Bar(
+                x=sdf['Price_Change_Percent'], y=sdf['Symbol'], orientation='h',
+                marker_color=['#f04f63' if x < 0 else '#0fd4a0' for x in sdf['Price_Change_Percent']],
+                text=sdf['Price_Change_Percent'].map(lambda x: f"{x:+.1f}%"), textposition='outside'
+            ))
+            fig.update_layout(
+                title=dict(text=t("ඉලක්ක මිල වෙනස (%)", "Forecast Price Change (%)"), font=dict(color='#dce8f8')),
+                xaxis_title=t("වෙනස (%)", "Change (%)"), height=430, **_bg
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        with v2:
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(
+                x=predictions_df['Symbol'], y=predictions_df['Previous_Close'],
+                mode='markers+lines', name=t('ඊයේ', 'Yesterday'),
+                marker=dict(size=8, color='#3d5570'), line=dict(color='#3d5570', dash='dot')
+            ))
+            fig.add_trace(go.Scatter(
+                x=predictions_df['Symbol'], y=predictions_df['Predicted_Price'],
+                mode='markers+lines', name=t('ඉලක්කය', 'Forecast'),
+                marker=dict(size=11, color='#3d7fff'), line=dict(color='#3d7fff', width=2.5)
+            ))
+            fig.update_layout(
+                title=dict(text=t("ඊයේ හා ඉලක්ක මිල (රු.)", "Yesterday vs Forecast (Rs.)"), font=dict(color='#dce8f8')),
+                yaxis_title=t("මිල (රු.)", "Price (Rs.)"), height=430, **_bg
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+    with vt2:
+        v1, v2 = st.columns(2)
+        with v1:
+            fig = px.scatter(
+                predictions_df, x='Sentiment_Score', y='Price_Change_Percent',
+                size='Previous_Close', color='Sector', text='Symbol',
+                title=t("ප්‍රවෘත්ති ස්වරය vs ඉලක්ක මිල", "News Sentiment vs Forecast Change"),
+                height=430
+            )
+            fig.update_traces(textposition='top center')
+            fig.update_layout(**_bg)
+            st.plotly_chart(fig, use_container_width=True)
+        with v2:
+            sc = predictions_df['Sentiment_Category'].value_counts()
+            colors_map = {'Positive': '#0fd4a0', 'Neutral': '#3d5570', 'Negative': '#f04f63'}
+            fig = go.Figure(go.Pie(
+                labels=sc.index, values=sc.values, hole=0.44,
+                marker=dict(colors=[colors_map.get(l, '#3d7fff') for l in sc.index])
+            ))
+            fig.update_layout(
+                title=dict(text=t("සමස්ත ප්‍රවෘත්ති ස්වරය", "Overall News Sentiment"), font=dict(color='#dce8f8')),
+                height=430, **_bg
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+    with vt3:
+        v1, v2 = st.columns(2)
+        with v1:
+            sp = predictions_df.groupby('Sector')['Price_Change_Percent'].mean().reset_index()
+            fig = go.Figure(go.Bar(
+                x=sp['Sector'], y=sp['Price_Change_Percent'],
+                text=sp['Price_Change_Percent'].map(lambda x: f"{x:+.1f}%"), textposition='outside',
+                marker_color=['#0fd4a0' if x > 0 else '#f04f63' for x in sp['Price_Change_Percent']]
+            ))
+            fig.update_layout(
+                title=dict(text=t("අංශය අනුව සාමාන්‍ය ඉලක්ක වෙනස", "Avg Forecast Change by Sector"), font=dict(color='#dce8f8')),
+                height=430, **_bg
+            )
+            st.plotly_chart(fig, use_container_width=True)
+        with v2:
+            sct = predictions_df['Sector'].value_counts()
+            fig = go.Figure(go.Bar(
+                x=sct.values, y=sct.index, orientation='h',
+                marker_color='#3d7fff', text=sct.values, textposition='outside'
+            ))
+            fig.update_layout(
+                title=dict(text=t("අංශය අනුව සමාගම් ගණන", "Companies by Sector"), font=dict(color='#dce8f8')),
+                height=430, **_bg
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+    # ── Recommendations ───────────────────────────────────────────────────────
+    st.markdown(f'<div class="sec-hdr"><span>06</span> {t("නිර්දේශ", "Recommendations")}</div>',
+                unsafe_allow_html=True)
+
+    rc1, rc2 = st.columns(2)
+    with rc1:
+        st.markdown(f"<div style='font-size:0.82rem;font-weight:700;color:#0fd4a0;margin-bottom:0.8rem;'>"
+                    f"{t('ඉහළ ඉලක්ක', 'Top Forecast Opportunities')}</div>", unsafe_allow_html=True)
+        hc   = predictions_df[predictions_df['Confidence'] >= CONFIDENCE_THRESHOLD]
+        top3 = hc.nlargest(3, 'Price_Change_Percent')
+        if len(top3) == 0:
+            st.info(t("ප්‍රමාණවත් විශ්වාසනීයතාවයක් ඇති ධනාත්මක ඉලක්ක නොමැත.",
+                      "No high-confidence positive forecasts at this time."))
+        else:
+            for _, row in top3.iterrows():
+                sa = f" — {t('කොටස් බෙදීම ගළපා ඇත', 'Split-adjusted')}" if row['Split_Adjusted'] else ""
+                st.markdown(f"""<div class='opp-card'>
+                    <h4>{row['Symbol']} — {row['Company']}{sa}</h4>
+                    <div class='c-row'>
+                        <strong>{t('ඉලක්ක මිල', 'Target Price')}:</strong> Rs.&nbsp;{row['Predicted_Price']:.2f}
+                        &nbsp;·&nbsp;
+                        <strong>{t('ඉලක්ක වෙනස', 'Change')}:</strong>
+                        <span class='tg'>{row['Price_Change_Percent']:+.2f}%</span>
+                    </div>
+                    <div class='c-row'>
+                        <strong>{t('ප්‍රවෘත්ති ස්වරය', 'Sentiment')}:</strong> {row['Sentiment_Category']}
+                        &nbsp;·&nbsp;
+                        <strong>{t('ඇස්තමේන්තු නිරවද්‍යතාව', 'Est. Accuracy')}:</strong> {row['Best_MAPE']}
+                    </div>
+                </div>""", unsafe_allow_html=True)
+
+    with rc2:
+        st.markdown(f"<div style='font-size:0.82rem;font-weight:700;color:#f04f63;margin-bottom:0.8rem;'>"
+                    f"{t('අවධානයෙන් නිරීක්ෂණය කරන්න', 'Watch Closely')}</div>", unsafe_allow_html=True)
+        bot3 = predictions_df.nsmallest(3, 'Price_Change_Percent')
+        for _, row in bot3.iterrows():
+            sa = f" — {t('කොටස් බෙදීම ගළපා ඇත', 'Split-adjusted')}" if row['Split_Adjusted'] else ""
+            st.markdown(f"""<div class='mon-card'>
+                <h4>{row['Symbol']} — {row['Company']}{sa}</h4>
+                <div class='c-row'>
+                    <strong>{t('ඉලක්ක මිල', 'Target Price')}:</strong> Rs.&nbsp;{row['Predicted_Price']:.2f}
+                    &nbsp;·&nbsp;
+                    <strong>{t('ඉලක්ක වෙනස', 'Change')}:</strong>
+                    <span class='tr'>{row['Price_Change_Percent']:+.2f}%</span>
+                </div>
+                <div class='c-row'>
+                    <strong>{t('ප්‍රවෘත්ති ස්වරය', 'Sentiment')}:</strong> {row['Sentiment_Category']}
+                    &nbsp;·&nbsp;
+                    <strong>{t('ඇස්තමේන්තු නිරවද්‍යතාව', 'Est. Accuracy')}:</strong> {row['Best_MAPE']}
+                </div>
+            </div>""", unsafe_allow_html=True)
+
+    # ── Export ────────────────────────────────────────────────────────────────
+    st.markdown(f'<div class="sec-hdr"><span>07</span> {t("වාර්තා බාගත කිරීම", "Export Reports")}</div>',
+                unsafe_allow_html=True)
+
+    e1, e2, e3 = st.columns(3)
+    ts = datetime.now().strftime('%Y%m%d_%H%M')
+    with e1:
+        st.download_button(
+            t("මිල අනාවැකිය (CSV)", "Price Forecasts (CSV)"),
+            predictions_df.to_csv(index=False),
+            f"forecasts_{ts}.csv", "text/csv", use_container_width=True
+        )
+    with e2:
+        st.download_button(
+            t("ප්‍රවෘත්ති ස්වරය (CSV)", "Sentiment Report (CSV)"),
+            sentiment_df.to_csv(index=False),
+            f"sentiment_{ts}.csv", "text/csv", use_container_width=True
+        )
+    with e3:
+        full = predictions_df.copy()
+        full['Analysis_Date']     = analysis_date
+        full['Articles_Analyzed'] = len([tx for tx in news_texts if tx.strip()])
+        full['System_Version']    = 'SentiTrade v1.0.0'
+        st.download_button(
+            t("සම්පූර්ණ වාර්තාව (CSV)", "Full Report (CSV)"),
+            full.to_csv(index=False),
+            f"full_report_{ts}.csv", "text/csv", use_container_width=True
+        )
+
+    # ── Disclaimer ────────────────────────────────────────────────────────────
+    st.markdown("---")
     st.markdown(f"""
-    <div class='info-box' style='margin-top:1.5rem;'>
-        <strong>{t('නිෂ්පාදකයා','Developer')} —</strong>
+    <div class='warn-box'>
+        <strong>{t('වගකීම් සීමාව', 'Disclaimer')}</strong> —
         {t(
-            'SentiTrade නිෂ්පාදනය කළේ AI/ML ඉංජිනේරු Huzaifa Ameer විසිනි. '
-            'LinkedIn: linkedin.com/in/huzaifaameer',
-            'SentiTrade was developed by Huzaifa Ameer, AI/ML Engineer. '
-            'LinkedIn: linkedin.com/in/huzaifaameer'
+            'SentiTrade ලබා දෙනු ලබන සියලු ම අනාවැකි AI ආදර්ශ මත පදනම් වූ ඇස්තමේන්තු පමණි. '
+            'WATA (Watawala Plantations) හා BFL (Bairaha Farms) සඳහා ලබා දෙනු ලබන ඉලක්ක මිල '
+            'කොටස් බෙදීම (1:5) සඳහා ස්වයංක්‍රීයව ගළපා ඇත. '
+            'අතීත ආදර්ශ කාර්ය සාධනය අනාගත ප්‍රතිලාභ සහතික නොකරයි. '
+            'මෙය ආයෝජන උපදෙසක් නොවේ.',
+            'All forecasts from SentiTrade are AI-based estimates only. '
+            'Target prices for WATA (Watawala Plantations) and BFL (Bairaha Farms) are '
+            'automatically adjusted for their 1:5 stock split. '
+            'Past model performance does not guarantee future results. '
+            'This is not financial or investment advice.'
         )}
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# ===============================
-# PAGE: HOME (MAIN ANALYSIS)
-# ===============================
-
-else:
-    st.markdown('<div class="page-wrap">', unsafe_allow_html=True)
-
-    # ── HERO ────────────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class="hero-wrap">
-        <div class="hero-label">
-            <span></span>
-            CSE · Colombo Stock Exchange · Sinhala News Intelligence
-        </div>
-        <h1 class="hero-title">
-            {t('<em>සිංහල</em> ප්‍රවෘත්තිවලින්<br>කොටස් මිල ගණනය කරන්න',
-               'Forecast CSE stock prices<br>from <em>Sinhala</em> news')}
-        </h1>
-        <p class="hero-desc">
-            {t(
-                'ඔබ කියවූ සිංහල ව්‍යාපාරික ප්‍රවෘත්ති ලිපිය ඇතුළු කර, ඊයේ කොටස් මිල '
-                'ඇතුළු කරන්න. SentiTrade ඔබට ඊළඟ ව්‍යාපාරික දිනය සඳහා '
-                'කොළඹ කොටස් හුවමාරුවේ සමාගම් 10ක ඇස්තමේන්තු ලබා දේ.',
-                'Enter a Sinhala business news article and yesterday\'s closing prices. '
-                'SentiTrade will estimate the next trading day\'s prices for '
-                '10 Colombo Stock Exchange companies.'
-            )}
-        </p>
-        <div class="hero-stats">
-            <div>
-                <div class="hero-stat-val">10</div>
-                <div class="hero-stat-lbl">{t('සමාගම්','Companies')}</div>
-            </div>
-            <div>
-                <div class="hero-stat-val">CSE</div>
-                <div class="hero-stat-lbl">{t('කොළඹ කොටස් හුවමාරුව','Colombo Stock Exchange')}</div>
-            </div>
-            <div>
-                <div class="hero-stat-val">{t('සිංහල','Sinhala')}</div>
-                <div class="hero-stat-lbl">{t('ප්‍රවෘත්ති ආශ්‍රිත','News-Driven')}</div>
-            </div>
-        </div>
+# ── FOOTER ────────────────────────────────────────────────────────────────────
+st.markdown(f"""
+<div class="footer-bar">
+    <div class="footer-left">
+        <strong>SentiTrade</strong><br>
+        {t(
+            'කොළඹ කොටස් හුවමාරුව සඳහා AI-ශක්තිමත් සිංහල ප්‍රවෘත්ති ස්වර විශ්ලේෂණ හා කොටස් මිල අනාවැකි පද්ධතිය.',
+            'AI-powered Sinhala news sentiment analysis and stock price forecasting system for the Colombo Stock Exchange.'
+        )}<br>
+        {t('සෑදුවේ', 'Developed by')}
+        <a href="https://www.linkedin.com/in/huzaifaameer/" target="_blank">Huzaifa Ameer</a>
+        &nbsp;·&nbsp; © 2026 {t('සියලු හිමිකම් ඇවිරිණි', 'All Rights Reserved')}
     </div>
-    """, unsafe_allow_html=True)
-
-    # ── INPUT ────────────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class='sec-hdr'>
-        <span class='sec-hdr-title'>{t('දත්ත ඇතුළත් කිරීම','Data Input')}</span>
-        <span class='sec-hdr-line'></span>
+    <div class="footer-right">
+        v1.0.0<br>
+        CSE · Colombo<br>
+        10 {t('සමාගම', 'Companies')}
     </div>
-    """, unsafe_allow_html=True)
-
-    tab1, tab2 = st.tabs([
-        t("ප්‍රවෘත්ති ලිපි", "News Articles"),
-        t("කොටස් මිල", "Stock Prices"),
-    ])
-
-    with tab1:
-        st.markdown(f"""
-        <div class='info-box'>
-            {t(
-                '<strong>සිංහල ව්‍යාපාරික ලිපි පමණක් ඇතුළු කරන්න.</strong> '
-                'ලිපි 3-5 ක් ඇතුළු කිරීමෙන් ප්‍රතිඵල වඩාත් නිවැරදි ලෙස ලැබේ.',
-                '<strong>Sinhala business news articles only.</strong> '
-                'Adding 3–5 articles improves forecast accuracy.'
-            )}
-        </div>
-        """, unsafe_allow_html=True)
-
-        if "news_inputs" not in st.session_state:
-            st.session_state.news_inputs = [""]
-
-        ca, cb, cc = st.columns([3,1,1])
-        with cb:
-            if st.button(t("ලිපිය එකතු කරන්න", "Add Article"), use_container_width=True):
-                st.session_state.news_inputs.append(""); st.rerun()
-        with cc:
-            if st.button(t("සියල්ල මකන්න", "Clear All"), use_container_width=True):
-                st.session_state.news_inputs = [""]; st.rerun()
-
-        news_texts = []
-        for i in range(len(st.session_state.news_inputs)):
-            news = st.text_area(
-                f"{t('ලිපිය','Article')} {i+1}",
-                height=130,
-                value=st.session_state.news_inputs[i],
-                key=f"news_{i}",
-                placeholder=t(
-                    "සිංහල ව්‍යාපාරික ප්‍රවෘත්ති ලිපිය මෙහි ඇලවන්න… "
-                    "(උදා: 'ලංකා IOC හි ලාභය රු. මිලියන 450 ඉක්මවා ඇත.')",
-                    "Paste a Sinhala business news article here… "
-                    "(e.g., 'Lanka IOC profits cross Rs. 450 million.')"
-                )
-            )
-            news_texts.append(news)
-            st.session_state.news_inputs[i] = news
-
-    with tab2:
-        st.markdown(f"""
-        <div class='info-box'>
-            {t(
-                '<strong>ඊයේ (previous day) CSE හි වසා දැමූ කොටස් මිල</strong> '
-                'රුපියල් (Rs.) ඒකකයෙන් ඇතුළු කරන්න.',
-                'Enter each company\'s <strong>previous day closing price</strong> '
-                'from the CSE, in Sri Lankan Rupees (Rs.).'
-            )}
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Show split note once
-        if any(c in SPLIT_COMPANIES for c in companies):
-            st.markdown(f"""
-            <div class='warn-box'>
-                {t(
-                    '<strong>WATA සහ BFL:</strong> මෙම සමාගම් දෙකේ කොටස් සිතා බෙදීමෙන් (stock split) '
-                    'ලැබෙන මිල ඇතුළු කරන්න. WATA — 2025 මාර්තු (1:5), BFL — 2023 අගෝස්තු (1:5).',
-                    '<strong>WATA and BFL:</strong> Enter the current post-split price for these companies. '
-                    'WATA split 1-for-5 in March 2025; BFL split 1-for-5 in August 2023.'
-                )}
-            </div>
-            """, unsafe_allow_html=True)
-
-        prev_close_prices = {}
-        sectors = {}
-        for c in companies:
-            sectors.setdefault(company_data[c]['sector'], []).append(c)
-
-        for sector, sector_cos in sectors.items():
-            with st.expander(f"{sector}", expanded=True):
-                cols = st.columns(min(3, len(sector_cos)))
-                for idx, c in enumerate(sector_cos):
-                    with cols[idx % 3]:
-                        info = company_data[c]
-                        split_tag = ""
-                        if c in SPLIT_COMPANIES:
-                            split_tag = f" <span style='font-size:0.65rem;color:#d97706;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:1px 5px;'>split-adj</span>"
-                        st.markdown(f"<div style='font-weight:600;font-size:0.88rem;color:#0f172a;margin-bottom:2px;'>{info['symbol']}{split_tag}</div>", unsafe_allow_html=True)
-                        st.caption(info['name'][:28] + "…")
-                        prev_close_prices[c] = st.number_input(
-                            t("Rs.", "Rs."),
-                            min_value=0.0,
-                            value=info['default_price'],
-                            step=0.1,
-                            format="%.2f",
-                            key=f"price_{c}",
-                            label_visibility="visible"
-                        )
-
-    # ── ANALYSE BUTTON ────────────────────────────────────────────────────────
-    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
-    _, btn_col, _ = st.columns([1.5, 2, 1.5])
-    with btn_col:
-        analyze_button = st.button(
-            t("විශ්ලේෂණය ක්‍රියාත්මක කරන්න", "Run Analysis"),
-            type="primary", use_container_width=True
-        )
-
-    # ===============================
-    # ANALYSIS EXECUTION
-    # ===============================
-
-    if analyze_button:
-        if all(tx.strip() == "" for tx in news_texts):
-            st.warning(t(
-                "අවම වශයෙන් එක් සිංහල ලිපියක් ඇතුළු කරන්න.",
-                "Please enter at least one Sinhala news article."
-            ))
-            st.stop()
-
-        pb = st.progress(0)
-        st_txt = st.empty()
-
-        # Sentiment
-        st_txt.markdown(f"<div style='color:#475569;font-size:0.87rem;padding:0.4rem 0;'>{t('ලිපිවල ව්‍යාපාරික ස්වභාවය විශ්ලේෂණය කරමින්…','Reading news sentiment…')}</div>", unsafe_allow_html=True)
-        sent_res = []
-        for idx, text in enumerate(news_texts, 1):
-            if text.strip() == "": continue
-            row = {
-                t("ලිපිය","Article"): f"{t('ලිපිය','Article')} {idx}",
-                t("පෙරදසුන","Preview"): text[:100] + "…"
-            }
-            for c in companies:
-                row[c] = analyze_sentiment(text, c)
-            sent_res.append(row)
-            pb.progress(int((idx / len(news_texts)) * 40))
-
-        sentiment_df = pd.DataFrame(sent_res)
-        smap = {"Positive": 1, "Neutral": 0, "Negative": -1}
-        score_mx = sentiment_df[[c for c in companies if c in sentiment_df.columns]].copy()
-        for c in companies:
-            if c in score_mx.columns:
-                score_mx[c] = score_mx[c].map(smap)
-        daily_scores = score_mx.mean().reset_index()
-        daily_scores.columns = ["Company", "Average_Sentiment_Score"]
-
-        # Predictions
-        st_txt.markdown(f"<div style='color:#475569;font-size:0.87rem;padding:0.4rem 0;'>{t('ඊළඟ ව්‍යාපාරික දිනය සඳහා මිල ගණනය කරමින්…','Calculating price estimates…')}</div>", unsafe_allow_html=True)
-        preds_list, failed = [], []
-
-        for idx, (_, row_d) in enumerate(daily_scores.iterrows()):
-            company = row_d["Company"]
-            ss = row_d["Average_Sentiment_Score"]
-            pc = prev_close_prices.get(company, company_data[company]['default_price'])
-            pred_price, conf, model_used = predict_best(company, ss, pc, analysis_date)
-
-            if pred_price is None:
-                failed.append(company_data[company]['symbol'])
-                continue
-
-            chg_amt = pred_price - pc
-            chg_pct = (chg_amt / pc) * 100 if pc > 0 else 0
-
-            # Display prices for split-adjusted companies (show as-is; they are already split-adjusted)
-            display_prev  = pc
-            display_pred  = pred_price
-            split_note    = ""
-            if company in SPLIT_COMPANIES:
-                split_note = t(
-                    f"(split-adj · 1:5 · {SPLIT_COMPANIES[company]['date']})",
-                    f"(split-adj · 1:5 · {SPLIT_COMPANIES[company]['date']})"
-                )
-
-            preds_list.append({
-                "Company":               company_data[company]['name'],
-                "Symbol":                company_data[company]['symbol'],
-                "Sector":                company_data[company]['sector'],
-                "Previous_Close":        display_prev,
-                "Predicted_Price":       display_pred,
-                "Price_Change":          chg_amt,
-                "Price_Change_Percent":  chg_pct,
-                "Sentiment_Score":       ss,
-                "Sentiment_Category":    "Positive" if ss > 0.1 else "Negative" if ss < -0.1 else "Neutral",
-                "Model_Used":            model_used,
-                "Confidence":            conf,
-                "Split_Adjusted":        company in SPLIT_COMPANIES,
-                "Split_Note":            split_note,
-                "Color":                 company_data[company]['color'],
-            })
-            pb.progress(40 + int(((idx + 1) / len(companies)) * 60))
-
-        pb.empty()
-        st_txt.empty()
-
-        if failed:
-            st.warning(f"{t('ගණනය නොකළ හැකි','Could not forecast')}: {', '.join(failed)}")
-        if not preds_list:
-            st.error(t("ගණනය කිරීම අසාර්ථකයි.", "No predictions could be generated."))
-            st.stop()
-
-        predictions_df = pd.DataFrame(preds_list)
-
-        # ── RESULTS ────────────────────────────────────────────────────────
-        st.markdown(f"""
-        <div class='sec-hdr'>
-            <span class='sec-hdr-title'>{t('ප්‍රතිඵල','Results')}</span>
-            <span class='sec-hdr-line'></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Summary metrics
-        avg_ret = predictions_df['Price_Change_Percent'].mean()
-        pos_n   = len(predictions_df[predictions_df['Price_Change_Percent'] > 0])
-        neg_n   = len(predictions_df[predictions_df['Price_Change_Percent'] < 0])
-        bstp    = predictions_df.loc[predictions_df['Price_Change_Percent'].idxmax()]
-        avg_snt_raw = predictions_df['Sentiment_Score'].mean()
-        snt_label   = t("ධනාත්මක","Positive") if avg_snt_raw > 0.1 else t("ඍණාත්මක","Negative") if avg_snt_raw < -0.1 else t("මධ්‍යස්ථ","Neutral")
-
-        st.markdown(f"""
-        <div class='metric-grid'>
-            <div class='metric-card'>
-                <div class='metric-val'>{avg_ret:+.1f}%</div>
-                <div class='metric-lbl'>{t('සාමාන්‍ය ඇස්තමේන්තු වෙනස','Avg Estimated Change')}</div>
-            </div>
-            <div class='metric-card'>
-                <div class='metric-val'>{pos_n}</div>
-                <div class='metric-lbl'>{t('ලාභ ඇස්තමේන්තු','Estimated Gainers')}</div>
-                <div class='metric-delta-dn'>{neg_n} {t('පහත','downward')}</div>
-            </div>
-            <div class='metric-card'>
-                <div class='metric-val'>{snt_label}</div>
-                <div class='metric-lbl'>{t('ප්‍රවෘත්ති ස්වභාවය','Overall News Tone')}</div>
-            </div>
-            <div class='metric-card'>
-                <div class='metric-val'>{bstp['Symbol']}</div>
-                <div class='metric-lbl'>{t('ඉහළම ඇස්තමේන්තු','Highest Estimate')}</div>
-                <div class='metric-delta-up'>{bstp['Price_Change_Percent']:+.1f}%</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Sentiment table
-        st.markdown(f"""
-        <div class='sec-hdr'>
-            <span class='sec-hdr-title'>{t('ප්‍රවෘත්ති ස්වභාවය · ලිපි අනුව','News Tone per Article')}</span>
-            <span class='sec-hdr-line'></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        ad = sentiment_df.copy()
-        rd = {}
-        for c in companies:
-            if c in ad.columns:
-                rd[c] = company_data[c]['symbol']
-        ad = ad.rename(columns=rd)
-
-        def _sty(val):
-            if val == "Positive": return 'background-color:#f0fdf4;color:#065f46;font-weight:600;'
-            if val == "Negative": return 'background-color:#fff1f2;color:#9f1239;font-weight:600;'
-            if val == "Neutral":  return 'background-color:#f8fafc;color:#475569;'
-            return ''
-
-        sym_cols = [company_data[c]['symbol'] for c in companies if company_data[c]['symbol'] in ad.columns]
-        st.dataframe(ad.style.map(_sty, subset=sym_cols), use_container_width=True, height=320)
-
-        # Price predictions table
-        st.markdown(f"""
-        <div class='sec-hdr'>
-            <span class='sec-hdr-title'>{t('ඇස්තමේන්තු කොටස් මිල','Estimated Stock Prices')}</span>
-            <span class='sec-hdr-line'></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        disp = predictions_df.copy()
-        disp['Prev_Close_Display']    = disp.apply(
-            lambda r: f"Rs. {r['Previous_Close']:,.2f}" + (" *" if r['Split_Adjusted'] else ""), axis=1)
-        disp['Predicted_Display']     = disp.apply(
-            lambda r: f"Rs. {r['Predicted_Price']:,.2f}" + (" *" if r['Split_Adjusted'] else ""), axis=1)
-        disp['Change_Display']        = disp['Price_Change_Percent'].map(lambda x: f"{x:+.2f}%")
-        disp['Sentiment_Display']     = disp['Sentiment_Category'].map(
-            lambda x: t("ධනාත්මක","Positive") if x=="Positive"
-                      else t("ඍණාත්මක","Negative") if x=="Negative"
-                      else t("මධ්‍යස්ථ","Neutral"))
-
-        col_map = {
-            'Symbol':            t('සිරස','Symbol'),
-            'Sector':            t('අංශය','Sector'),
-            'Prev_Close_Display':t('ඊයේ මිල','Yesterday'),
-            'Predicted_Display': t('ඇස්තමේන්තු','Estimated'),
-            'Change_Display':    t('වෙනස','Change'),
-            'Sentiment_Display': t('ප්‍රවෘත්ති ස්වභාවය','News Tone'),
-        }
-
-        def _row_sty(row):
-            pct = row['Price_Change_Percent']
-            color = '#f0fdf4' if pct > 0 else '#fff1f2' if pct < 0 else ''
-            return [f'background:{color}'] * len(row)
-
-        st.dataframe(
-            disp[list(col_map.keys())].rename(columns=col_map),
-            use_container_width=True, height=380
-        )
-        st.markdown(f"<p style='font-size:0.74rem;color:#94a3b8;margin-top:4px;'>* {t('split-adjusted මිල','Split-adjusted price (WATA 1:5 Mar 2025 · BFL 1:5 Aug 2023)')}</p>", unsafe_allow_html=True)
-
-        # Charts
-        st.markdown(f"""
-        <div class='sec-hdr'>
-            <span class='sec-hdr-title'>{t('ප්‍රස්ථාර','Charts')}</span>
-            <span class='sec-hdr-line'></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        _bg = dict(
-            paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-            font=dict(color='#475569', family='DM Sans, sans-serif'),
-            margin=dict(l=10, r=10, t=44, b=10)
-        )
-
-        vt1, vt2 = st.tabs([
-            t("ඇස්තමේන්තු මිල වෙනස", "Estimated Price Changes"),
-            t("ප්‍රවෘත්ති ස්වභාවය", "News Tone"),
-        ])
-
-        with vt1:
-            v1, v2 = st.columns(2)
-            with v1:
-                sdf = predictions_df.sort_values('Price_Change_Percent', ascending=True)
-                fig = go.Figure(go.Bar(
-                    x=sdf['Price_Change_Percent'], y=sdf['Symbol'], orientation='h',
-                    marker_color=['#ef4444' if x < 0 else '#10b981' for x in sdf['Price_Change_Percent']],
-                    text=sdf['Price_Change_Percent'].map(lambda x: f"{x:+.1f}%"),
-                    textposition='outside'
-                ))
-                fig.update_layout(
-                    title=t("ඇස්තමේන්තු වෙනස (%)","Estimated Change (%)"),
-                    xaxis_title=t("වෙනස (%)","Change (%)"),
-                    height=420, **_bg
-                )
-                fig.update_xaxes(gridcolor='#f1f5f9', zerolinecolor='#e2e8f0')
-                st.plotly_chart(fig, use_container_width=True)
-            with v2:
-                fig2 = go.Figure()
-                fig2.add_trace(go.Scatter(
-                    x=predictions_df['Symbol'], y=predictions_df['Previous_Close'],
-                    mode='markers+lines', name=t('ඊයේ','Yesterday'),
-                    marker=dict(size=8, color='#94a3b8'),
-                    line=dict(color='#cbd5e1', dash='dot')
-                ))
-                fig2.add_trace(go.Scatter(
-                    x=predictions_df['Symbol'], y=predictions_df['Predicted_Price'],
-                    mode='markers+lines', name=t('ඇස්තමේන්තු','Estimated'),
-                    marker=dict(size=11, color='#1d4ed8'),
-                    line=dict(color='#1d4ed8', width=2.5)
-                ))
-                fig2.update_layout(
-                    title=t("ඊයේ vs ඇස්තමේන්තු","Yesterday vs Estimated"),
-                    yaxis_title=t("මිල (රු.)","Price (Rs.)"),
-                    height=420, **_bg
-                )
-                fig2.update_yaxes(gridcolor='#f1f5f9')
-                st.plotly_chart(fig2, use_container_width=True)
-
-        with vt2:
-            v1, v2 = st.columns(2)
-            with v1:
-                sc = predictions_df['Sentiment_Category'].value_counts()
-                color_map = {'Positive':'#10b981','Neutral':'#94a3b8','Negative':'#ef4444'}
-                colors = [color_map.get(c, '#94a3b8') for c in sc.index]
-                fig3 = go.Figure(go.Pie(
-                    labels=[t("ධනාත්මක","Positive") if l=="Positive"
-                            else t("ඍණාත්මක","Negative") if l=="Negative"
-                            else t("මධ්‍යස්ථ","Neutral") for l in sc.index],
-                    values=sc.values, hole=0.46,
-                    marker=dict(colors=colors)
-                ))
-                fig3.update_layout(title=t("ප්‍රවෘත්ති ස්වභාව බෙදාහැරීම","News Tone Distribution"), height=380, **_bg)
-                st.plotly_chart(fig3, use_container_width=True)
-            with v2:
-                sp = predictions_df.groupby('Sector')['Price_Change_Percent'].mean().reset_index()
-                fig4 = go.Figure(go.Bar(
-                    x=sp['Sector'], y=sp['Price_Change_Percent'],
-                    text=sp['Price_Change_Percent'].map(lambda x: f"{x:+.1f}%"),
-                    textposition='outside',
-                    marker_color=['#10b981' if x > 0 else '#ef4444' for x in sp['Price_Change_Percent']]
-                ))
-                fig4.update_layout(title=t("අංශය අනුව ඇස්තමේන්තු","By Sector"), height=380, **_bg)
-                fig4.update_yaxes(gridcolor='#f1f5f9')
-                st.plotly_chart(fig4, use_container_width=True)
-
-        # Recommendations
-        st.markdown(f"""
-        <div class='sec-hdr'>
-            <span class='sec-hdr-title'>{t('සාරාංශය','Summary')}</span>
-            <span class='sec-hdr-line'></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        rc1, rc2 = st.columns(2)
-        with rc1:
-            st.markdown(f"<div style='font-weight:700;color:#065f46;font-size:0.9rem;margin-bottom:0.75rem;'>{t('ඉහළ ඇස්තමේන්තු','Highest Estimates')}</div>", unsafe_allow_html=True)
-            hc = predictions_df[predictions_df['Confidence'] >= CONFIDENCE_THRESHOLD]
-            if len(hc) == 0:
-                hc = predictions_df
-            top3 = hc.nlargest(3, 'Price_Change_Percent')
-            for _, row in top3.iterrows():
-                sn = f" <span style='font-size:0.7rem;color:#d97706;'>(split-adj)</span>" if row['Split_Adjusted'] else ""
-                st.markdown(f"""
-                <div class='opp-card'>
-                    <div class='opp-card-title'>{row['Symbol']} — {row['Company']}</div>
-                    <div class='card-row'>
-                        <strong>{t('ඊළඟ ඇස්තමේන්තු','Est. Price')}:</strong>
-                        Rs.&nbsp;{row['Predicted_Price']:.2f}{sn}
-                        &nbsp;&nbsp;<strong>{t('වෙනස','Change')}:</strong>
-                        <span class='tag-green'>{row['Price_Change_Percent']:+.2f}%</span>
-                    </div>
-                    <div class='card-row'>
-                        <strong>{t('ප්‍රවෘත්ති ස්වභාවය','News Tone')}:</strong>
-                        {t("ධනාත්මක","Positive") if row['Sentiment_Category']=="Positive"
-                          else t("ඍණාත්මක","Negative") if row['Sentiment_Category']=="Negative"
-                          else t("මධ්‍යස්ථ","Neutral")}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-
-        with rc2:
-            st.markdown(f"<div style='font-weight:700;color:#9f1239;font-size:0.9rem;margin-bottom:0.75rem;'>{t('අඩු ඇස්තමේන්තු','Lowest Estimates')}</div>", unsafe_allow_html=True)
-            bot3 = predictions_df.nsmallest(3, 'Price_Change_Percent')
-            for _, row in bot3.iterrows():
-                sn = f" <span style='font-size:0.7rem;color:#d97706;'>(split-adj)</span>" if row['Split_Adjusted'] else ""
-                st.markdown(f"""
-                <div class='mon-card'>
-                    <div class='mon-card-title'>{row['Symbol']} — {row['Company']}</div>
-                    <div class='card-row'>
-                        <strong>{t('ඊළඟ ඇස්තමේන්තු','Est. Price')}:</strong>
-                        Rs.&nbsp;{row['Predicted_Price']:.2f}{sn}
-                        &nbsp;&nbsp;<strong>{t('වෙනස','Change')}:</strong>
-                        <span class='tag-red'>{row['Price_Change_Percent']:+.2f}%</span>
-                    </div>
-                    <div class='card-row'>
-                        <strong>{t('ප්‍රවෘත්ති ස්වභාවය','News Tone')}:</strong>
-                        {t("ධනාත්මක","Positive") if row['Sentiment_Category']=="Positive"
-                          else t("ඍණාත්මක","Negative") if row['Sentiment_Category']=="Negative"
-                          else t("මධ්‍යස්ථ","Neutral")}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-
-        # Export
-        st.markdown(f"""
-        <div class='sec-hdr'>
-            <span class='sec-hdr-title'>{t('ගොනු බාගත කිරීම','Export')}</span>
-            <span class='sec-hdr-line'></span>
-        </div>
-        """, unsafe_allow_html=True)
-
-        e1, e2, e3 = st.columns(3)
-        with e1:
-            st.download_button(
-                t("ඇස්තමේන්තු (.csv)", "Predictions (.csv)"),
-                predictions_df.to_csv(index=False),
-                f"predictions_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-                "text/csv", use_container_width=True
-            )
-        with e2:
-            st.download_button(
-                t("ප්‍රවෘත්ති ස්වභාවය (.csv)", "Sentiment (.csv)"),
-                sentiment_df.to_csv(index=False),
-                f"sentiment_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-                "text/csv", use_container_width=True
-            )
-        with e3:
-            full = predictions_df.copy()
-            full['Analysis_Date']     = analysis_date
-            full['Articles_Analysed'] = len([tx for tx in news_texts if tx.strip()])
-            st.download_button(
-                t("සම්පූර්ණ වාර්තාව (.csv)", "Full Report (.csv)"),
-                full.to_csv(index=False),
-                f"full_report_{datetime.now().strftime('%Y%m%d_%H%M')}.csv",
-                "text/csv", use_container_width=True
-            )
-
-        # Disclaimer
-        st.markdown(f"""
-        <div class='warn-box' style='margin-top:1.5rem;'>
-            <strong>{t('නිෂ්ක්‍රීය ප්‍රකාශය','Disclaimer')} —</strong>
-            {t(
-                'SentiTrade ලබා දෙන ඇස්තමේන්තු ප්‍රවෘත්ති-ආශ්‍රිත දිශාවකි — '
-                'ගැරන්ටියක් නොවේ. අතීත ප්‍රතිඵල අනාගතය සහතික නොකරයි. '
-                'ආයෝජන තීරණ ගැනීමේදී ශ්‍රේණිගත stockbroker හෝ මූල්‍ය උපදේශකයකු '
-                'හමුවන්න. <strong>මෙය මූල්‍ය උපදෙසක් නොවේ.</strong>',
-                'SentiTrade estimates are indicative only and based on news sentiment — '
-                'they are not a guarantee of future prices. Past performance does not '
-                'predict future results. Consult a licensed stockbroker or financial '
-                'adviser before making investment decisions. '
-                '<strong>This is not financial advice.</strong>'
-            )}
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ── FOOTER ────────────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class='footer'>
-        <div class='footer-inner'>
-            <div>
-                <div class='footer-brand'>SentiTrade</div>
-                <div class='footer-sub'>
-                    Colombo Stock Exchange · Sinhala News Intelligence<br>
-                    Version 1.0.0 · 10 Companies · CSE Listed
-                </div>
-            </div>
-            <div class='footer-right'>
-                <div style='font-weight:600;font-size:0.85rem;color:#0f172a;margin-bottom:3px;'>Huzaifa Ameer</div>
-                <div style='font-size:0.78rem;color:#94a3b8;margin-bottom:5px;'>AI/ML Engineer</div>
-                <a href='https://www.linkedin.com/in/huzaifaameer/' target='_blank'>LinkedIn</a>
-            </div>
-        </div>
-        <div class='footer-legal'>
-            &copy; 2026 Huzaifa Ameer. All rights reserved.
-            SentiTrade is provided for informational purposes only and does not constitute financial advice.
-            Forecasts are based on Sinhala news sentiment and historical price data.
-            Past results are not indicative of future performance.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown('</div>', unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
